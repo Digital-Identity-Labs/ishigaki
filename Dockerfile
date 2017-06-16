@@ -21,10 +21,12 @@ RUN unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-am
     echo "By using this software you agree to http://www.azul.com/products/zulu/zulu-terms-of-use/"
 
 RUN curl -O $JETTY_URL && md5sum jetty-distribution-9.4.6.v20170531.tar.gz | grep $JETTY_CHECKSUM && \
-    mkdir -p $JETTY_HOME && tar -zxvf jetty-distribution-9.*.tar.gz -C $JETTY_HOME --strip-components 1
+    mkdir -p $JETTY_HOME && tar -zxvf jetty-distribution-9.*.tar.gz -C $JETTY_HOME --strip-components 1 && \
+    rm -rf $JETTY_HOME/demo_base
 
 COPY src $SRC_DIR
-RUN mv $SRC_DIR/jetty-shib $JETTY_BASE
+RUN mv $SRC_DIR/jetty-shib $JETTY_BASE && \
+    mkdir /opt/jetty-shib/logs && chmod 0777 /opt/jetty-shib/logs
 
 
 
