@@ -25,19 +25,22 @@ RUN curl -O $JETTY_URL && md5sum jetty-distribution-9.4.6.v20170531.tar.gz | gre
     rm -rf $JETTY_HOME/demo_base
 
 ENV IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.3.1.tar.gz \
-    IDP_CHECKSUM=80ddc32401fe3b5b9e0e04ae2f11dd73 IDP_HOME=/opt/shibboleth-idp
+    IDP_CHECKSUM=80ddc32401fe3b5b9e0e04ae2f11dd73 IDP_HOME=/opt/shibboleth-idp \
+    IDP_HOSTNAME=idp.example.com IDP_SCOPE=example.com
 
 RUN curl -k -O  $IDP_URL && md5sum shibboleth-identity-provider-3.*.tar.gz | grep $IDP_CHECKSUM  && \
     mkdir -p idp_src && tar -zxf shibboleth-identity-provider-3.*.tar.gz -C idp_src --strip-components 1
 
+RUN echo "idp.entityID=https://idp.ojbc.local/idp/shibboleth" > temp.properties && \
+    idp_src/bin/install.sh -Didp.src.dir=/usr/local/src/idp_src -Didp.target.dir=/opt/shibboleth-idp \
+     -Didp.host.name=$IDP_HOSTNAME -Didp.scope=$IDP_SCOPE \
+     -Didp.sealer.password=password -Didp.keystore.password=password \
+     -Didp.noprompt=true -Didp.merge.properties=temp.properties
 
 
 COPY src $SRC_DIR
 RUN mv $SRC_DIR/jetty-shib $JETTY_BASE && \
     mkdir /opt/jetty-shib/logs && chmod 0777 /opt/jetty-shib/logs
-
-
-
 
 EXPOSE 8080
 
