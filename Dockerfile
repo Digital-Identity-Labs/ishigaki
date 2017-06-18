@@ -15,7 +15,7 @@ WORKDIR $SRC_DIR
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0x219BD9C9 && \
     echo "deb http://repos.azulsystems.com/debian stable  main" >> /etc/apt/sources.list.d/zulu.list && \
     echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list.d/backports.list && \
-    install_packages zulu-8 curl unzip
+    install_packages zulu-8 curl unzip procps net-tools
 RUN curl -O $JCE_URL && md5sum ZuluJCEPolicies.zip | grep $JCE_CHECKSUM
 RUN unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-amd64/jre/lib/security/ && \
     echo "By using this software you agree to http://www.azul.com/products/zulu/zulu-terms-of-use/"
