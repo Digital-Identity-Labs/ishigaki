@@ -46,6 +46,11 @@ RUN mkdir -p /var/opt/jetty/tmp && \
     chown -R jetty $JETTY_HOME $JETTY_BASE /var/opt/jetty/tmp && \
     chgrp -R jetty $IDP_HOME && chmod -R g+r $IDP_HOME
 
+ONBUILD COPY optfs /opt
+ONBUILD RUN idp_src/bin/install.sh -Didp.src.dir=/usr/local/src/idp_src -Didp.target.dir=/opt/shibboleth-idp \
+              -Didp.host.name=$IDP_HOSTNAME -Didp.scope=$IDP_SCOPE \
+              -Didp.sealer.password=password -Didp.keystore.password=password \
+              -Didp.noprompt=true -Didp.merge.properties=temp.properties
 
 
 EXPOSE 8080
