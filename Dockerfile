@@ -41,17 +41,22 @@ RUN echo "idp.entityID=$IDP_ID" > temp.properties && \
 
 
 COPY optfs /opt
-RUN mkdir -p /var/opt/jetty/tmp && \
-    mkdir -p $JETTY_BASE/logs && chmod 0777 $JETTY_BASE/logs  && \
-    chown -R jetty $JETTY_HOME $JETTY_BASE /var/opt/jetty/tmp && \
-    chgrp -R jetty $IDP_HOME && chmod -R g+r $IDP_HOME
+RUN mkdir -p /var/opt/jetty/tmp && chown -R jetty /var/opt/jetty/tmp && \
+    mkdir -p $JETTY_BASE/logs && chown jetty $JETTY_BASE/logs && chmod 0770 $JETTY_BASE/logs  && \
+    rm -rf $JETTY_HOME/demo_base && \
+    chgrp -R jetty $IDP_HOME/conf/*        && chmod -R g+r $IDP_HOME/conf/* && \
+    chgrp -R jetty $IDP_HOME/credentials/* && chmod -R g+r $IDP_HOME/credentials/* && \
+    mkdir -p $IDP_HOME/logs && chown -R jetty $IDP_HOME/logs && chmod -R 0770 $IDP_HOME/logs && \
+    mkdir -p $IDP_HOME/metadata && chown -R jetty $IDP_HOME/metadata && chmod -R 0770 $IDP_HOME/metadata && \
+    mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp && \
+    rm -rf /usr/local/src/* && echo "EH?"
 
 ONBUILD COPY optfs /opt
 ONBUILD RUN idp_src/bin/install.sh -Didp.src.dir=/usr/local/src/idp_src -Didp.target.dir=/opt/shibboleth-idp \
               -Didp.host.name=$IDP_HOSTNAME -Didp.scope=$IDP_SCOPE \
               -Didp.sealer.password=password -Didp.keystore.password=password \
-              -Didp.noprompt=true -Didp.merge.properties=temp.properties
-
+              -Didp.noprompt=true -Didp.merge.properties=temp.properties && \
+              touch /tmp/OMGWTFBBQ
 
 EXPOSE 8080
 

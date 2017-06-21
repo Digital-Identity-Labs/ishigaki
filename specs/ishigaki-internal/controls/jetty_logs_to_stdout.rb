@@ -5,10 +5,9 @@ control "jetty_logs_to_stdout" do
 
   describe file('/opt/jetty-shib/logs') do
     it { should be_directory }
-    its('owner') { should eq 'root' }
+    its('owner') { should eq 'jetty' }
     its('mode') { should cmp '0770' }
-    it { should be_grouped_into 'jetty' }
-    it { should be_writable.by  'jetty' }
+    it { should be_writable.by  'owner' }
   end
 
   describe file('/opt/jetty-shib/logs/*') do

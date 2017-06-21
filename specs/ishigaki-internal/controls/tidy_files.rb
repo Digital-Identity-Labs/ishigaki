@@ -11,7 +11,7 @@ control "tidy_files" do
     it {should_not exist}
   end
   describe command('ls -l /usr/local/src/ | wc -l | xargs echo -n') do
-    its('stdout') { should eq "0" }
+    its('stdout') { should eq "1" }
   end
 
   describe file('/opt/jetty/demo_base') do

@@ -8,8 +8,7 @@ control "shibboleth_logs_to_stdout" do
     its('owner') { should eq 'jetty' }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0770' }
-    it { should be_grouped_into 'jetty' }
-    it { should be_writable.by  'owner' }
+    it { should be_writable.by 'owner' }
   end
 
   describe file('/opt/shibboleth-idp/logs/*') do
