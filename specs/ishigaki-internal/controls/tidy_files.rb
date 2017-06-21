@@ -5,7 +5,13 @@ control "tidy_files" do
 
   describe file('/usr/local/src') do
     it {should be_directory}
-    it {should be_empty}
+  end
+
+  describe file('/usr/local/src/*') do
+    it {should_not exist}
+  end
+  describe command('ls -l /usr/local/src/ | wc -l | xargs echo -n') do
+    its('stdout') { should eq "0" }
   end
 
   describe file('/opt/jetty/demo_base') do
@@ -27,18 +33,8 @@ control "tidy_files" do
   describe file('/opt/shibboleth-idp/bin/*.bat') do
     it {should_not exist}
   end
-
-  describe file('/opt/jetty/start.jar') do
-    it {should exist}
+  describe command('ls -l /opt/shibboleth-idp/bin/ | grep \.bat | wc -l | xargs echo -n') do
+    its('stdout') { should eq "0" }
   end
-
-  describe file('/opt/jetty/VERSION.txt') do
-    its('content') {should match(%r{^jetty-9\.4\.})}
-  end
-
-  describe os_env('JETTY_HOME') do
-    its('content') {should eq "/opt/jetty"}
-  end
-
 
 end

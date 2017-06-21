@@ -11,6 +11,4 @@ control "jetty_base_for_shibboleth" do
     its('content') { should eq "/opt/jetty-shib" }
   end
 
-
-
 end
