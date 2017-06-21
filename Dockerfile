@@ -23,7 +23,8 @@ RUN unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-am
 RUN curl -O $JETTY_URL && md5sum jetty-distribution-9.4.6.v20170531.tar.gz | grep $JETTY_CHECKSUM && \
     mkdir -p $JETTY_HOME && tar -zxf jetty-distribution-9.*.tar.gz -C $JETTY_HOME --strip-components 1 && \
     useradd --user-group --shell /bin/false --home-dir $JETTY_BASE jetty && \
-    rm -rf $JETTY_HOME/demo_base
+    rm -rf $JETTY_HOME/demo_base && \
+    chown -R root $JETTY_HOME
 
 ENV IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.3.1.tar.gz \
     IDP_CHECKSUM=80ddc32401fe3b5b9e0e04ae2f11dd73 IDP_HOME=/opt/shibboleth-idp \
