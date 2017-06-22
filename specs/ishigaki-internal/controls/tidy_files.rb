@@ -45,4 +45,10 @@ control "tidy_files" do
 
   end
 
+  %w[src.zip demo man sample].each do |cruft|
+    describe file(cruft) do
+      it {should_not exist}
+    end
+  end
+
 end
