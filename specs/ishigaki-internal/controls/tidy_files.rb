@@ -37,4 +37,12 @@ control "tidy_files" do
     its('stdout') { should eq "0" }
   end
 
+  %w[gpg dirmngr].each do |deb| # curl unzip procps net-tools
+
+    describe package(deb) do
+      it { should_not be_installed }
+    end
+
+  end
+
 end
