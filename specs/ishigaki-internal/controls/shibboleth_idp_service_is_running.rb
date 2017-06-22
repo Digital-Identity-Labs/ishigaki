@@ -1,4 +1,4 @@
-control "shibboleth_idp_service" do
+control "shibboleth_idp_service_is_running" do
   impact 1.0
   title "The Shibboleth IdP service is running"
   desc "The Shibboleth IdP service is running on this container"
