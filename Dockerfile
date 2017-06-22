@@ -14,6 +14,7 @@ ARG IDP_CHECKSUM=80ddc32401fe3b5b9e0e04ae2f11dd73
 
 ENV JAVA_HOME=/usr/lib/jvm/zulu-8-amd64 \
     JETTY_HOME=/opt/jetty JETTY_BASE=/opt/jetty-shib \
+    ADMIN_HOME=/opt/admin \
     IDP_HOME=/opt/shibboleth-idp \
     IDP_HOSTNAME=idp.example.com IDP_SCOPE=example.com IDP_ID=https://idp.example.com/idp/shibboleth
 
@@ -34,6 +35,7 @@ RUN echo "\n## Installing Java..." && \
     useradd --user-group --shell /bin/false --home-dir $JETTY_BASE jetty && \
     rm -rf $JETTY_HOME/demo_base && \
     chown -R root $JETTY_HOME && \
+    mkdir -p /var/opt/jetty/tmp && chown -R jetty /var/opt/jetty/tmp && \
     echo "\n## Installing Shibboleth IdP..." && \
     curl -k -O $IDP_URL && md5sum shibboleth-identity-provider-3.*.tar.gz | grep $IDP_CHECKSUM  && \
     mkdir -p idp_src && tar -zxf shibboleth-identity-provider-3.*.tar.gz -C idp_src --strip-components 1 && \
@@ -43,20 +45,14 @@ RUN echo "\n## Installing Java..." && \
      -Didp.host.name=$IDP_HOSTNAME -Didp.scope=$IDP_SCOPE \
      -Didp.sealer.password=password -Didp.keystore.password=password \
      -Didp.noprompt=true -Didp.merge.properties=temp.properties  && \
+    mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp && \
     echo "\n## Tidying up..." && \
     rm -rf /usr/local/src/* && \
     apt-get remove --auto-remove --yes --allow-remove-essential gnupg dirmngr unzip
 
 COPY optfs /opt
 
-RUN mkdir -p /var/opt/jetty/tmp && chown -R jetty /var/opt/jetty/tmp && \
-    mkdir -p $JETTY_BASE/logs && chown jetty $JETTY_BASE/logs && chmod 0770 $JETTY_BASE/logs  && \
-    rm -rf $JETTY_HOME/demo_base && \
-    chgrp -R jetty $IDP_HOME/conf/*        && chmod -R g+r $IDP_HOME/conf/* && \
-    chgrp -R jetty $IDP_HOME/credentials/* && chmod -R g+r $IDP_HOME/credentials/* && \
-    mkdir -p $IDP_HOME/logs && chown -R jetty $IDP_HOME/logs && chmod -R 0770 $IDP_HOME/logs && \
-    mkdir -p $IDP_HOME/metadata && chown -R jetty $IDP_HOME/metadata && chmod -R 0770 $IDP_HOME/metadata && \
-    mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp
+RUN chmod a+x $ADMIN_HOME/*.sh && $ADMIN_HOME/prepare_apps.sh
 
 ONBUILD COPY optfs /opt
 ONBUILD RUN idp_src/bin/install.sh -Didp.src.dir=/usr/local/src/idp_src -Didp.target.dir=/opt/shibboleth-idp \
@@ -68,6 +64,6 @@ ONBUILD RUN idp_src/bin/install.sh -Didp.src.dir=/usr/local/src/idp_src -Didp.ta
 EXPOSE     8080
 USER       jetty
 WORKDIR    $JETTY_BASE
-ENTRYPOINT java -jar $JETTY_HOME/start.jar
+CMD java -jar $JETTY_HOME/start.jar
 
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/idp/status || exit 1
