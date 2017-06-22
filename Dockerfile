@@ -10,12 +10,12 @@ ENV JAVA_HOME=/usr/lib/jvm/zulu-8-amd64 JETTY_HOME=/opt/jetty JETTY_BASE=/opt/je
 
 WORKDIR $SRC_DIR
 
-
-
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0x219BD9C9 && \
+RUN install_packages gnupg dirmngr && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0x219BD9C9 && \
     echo "deb http://repos.azulsystems.com/debian stable  main" >> /etc/apt/sources.list.d/zulu.list && \
     echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list.d/backports.list && \
-    install_packages zulu-8 curl unzip procps net-tools
+    install_packages zulu-8 curl unzip procps net-tools && \
+    apt-get remove --auto-remove --yes --allow-remove-essential gnupg dirmngr && \
+    rm -rf $JAVA_HOME/*.zip $JAVA_HOME/demo $JAVA_HOME/man $JAVA_HOME/sample
 RUN curl -O $JCE_URL && md5sum ZuluJCEPolicies.zip | grep $JCE_CHECKSUM
 RUN unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-amd64/jre/lib/security/ && \
     echo "By using this software you agree to http://www.azul.com/products/zulu/zulu-terms-of-use/"
