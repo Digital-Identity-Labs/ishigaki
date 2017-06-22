@@ -1,6 +1,8 @@
 FROM bitnami/minideb:latest
 
-LABEL maintainer "pete@digitalidentitylabs.com"
+LABEL description="A foundation image for Shibboleth IdP containers" \
+      version="0.1.0" \
+      maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
 ARG JCE_CHECKSUM="ebe83e1bf25de382ce093cf89e93a944"
@@ -43,7 +45,7 @@ RUN echo "\n## Installing Java..." && \
      -Didp.noprompt=true -Didp.merge.properties=temp.properties  && \
     echo "\n## Tidying up..." && \
     rm -rf /usr/local/src/* && \
-    apt-get remove --auto-remove --yes --allow-remove-essential gnupg dirmngr curl unzip
+    apt-get remove --auto-remove --yes --allow-remove-essential gnupg dirmngr unzip
 
 COPY optfs /opt
 
@@ -67,3 +69,5 @@ EXPOSE     8080
 USER       jetty
 WORKDIR    $JETTY_BASE
 ENTRYPOINT java -jar $JETTY_HOME/start.jar
+
+HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/idp/status || exit 1
