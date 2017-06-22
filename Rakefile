@@ -1,6 +1,7 @@
 
-task :default => 'morning:turn_off_alarm'
+task :default => :refresh
 
+task :refresh => [:build, :test]
 
 task :build do
   sh "docker build ."
