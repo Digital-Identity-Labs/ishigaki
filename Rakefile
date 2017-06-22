@@ -4,13 +4,20 @@ task :default => :refresh
 task :refresh => [:build, :test]
 
 task :build do
-  sh "docker build ."
+  sh "docker build -t digitalidentitylabs/ishigaku ."
 end
 
 task :rebuild do
-  sh "docker build --force-rm ."
+  sh "docker build --force-rm -t digitalidentitylabs/ishigaku ."
 end
 
 task :test => [:build] do
-  sh "echo hmm"
+  begin
+    sh "docker run -d -p 8080:8080 digitalidentitylabs/ishigaku"
+    container_id = `docker ps -q -l`
+    sleep 10
+    sh "bundle exec inspec exec specs/ishigaki-internal/  -t docker://#{container_id}"
+  ensure
+    sh "docker stop #{container_id}" if container_id
+  end
 end
