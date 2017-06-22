@@ -52,7 +52,7 @@ RUN echo "\n## Installing Java..." && \
 
 COPY optfs /opt
 
-RUN chmod a+x $ADMIN_HOME/*.sh && $ADMIN_HOME/prepare_apps.sh
+RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
 
 ONBUILD COPY optfs /opt
 ONBUILD RUN idp_src/bin/install.sh -Didp.src.dir=/usr/local/src/idp_src -Didp.target.dir=/opt/shibboleth-idp \
