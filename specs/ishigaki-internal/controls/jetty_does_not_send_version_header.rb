@@ -5,7 +5,7 @@ control "jetty_does_not_send_version_header" do
   desc "Jetty does not send software version information in a header (don't advertise vulnerabilities)"
 
   describe http('http://localhost:8080/idp/status') do
-    its('headers.server') { should_not include 'Jetty' }
+    its('headers.server') { should eq nil }
   end
 
 end
