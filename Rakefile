@@ -16,7 +16,8 @@ task :test => [:build] do
     sh "docker run -d -p 8080:8080 digitalidentitylabs/ishigaku"
     container_id = `docker ps -q -l`
     sleep ENV['CI'] ? 20 : 10
-    sh "bundle exec inspec exec specs/ishigaki-internal/  -t docker://#{container_id}"
+    colour = ENV['CI'] ? "--no-color" : "--color"
+    sh "bundle exec inspec exec specs/ishigaki-internal/ #{colour} -t docker://#{container_id} "
   ensure
     sh "docker stop #{container_id}" if container_id
   end
