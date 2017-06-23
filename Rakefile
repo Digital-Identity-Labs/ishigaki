@@ -15,6 +15,7 @@ task :test => [:build] do
   begin
     sh "docker run -d -p 8080:8080 digitalidentitylabs/ishigaku"
     container_id = `docker ps -q -l`
+    sh "sync"
     sleep 10
     sh "bundle exec inspec exec specs/ishigaki-internal/  -t docker://#{container_id}"
   ensure
