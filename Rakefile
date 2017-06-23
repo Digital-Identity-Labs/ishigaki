@@ -4,11 +4,11 @@ task :default => :refresh
 task :refresh => [:build, :test]
 
 task :build do
-  sh "docker build -t digitalidentitylabs/ishigaku ."
+  sh "docker build --pull -t digitalidentitylabs/ishigaku ."
 end
 
 task :rebuild do
-  sh "docker build --force-rm -t digitalidentitylabs/ishigaku ."
+  sh "docker build --pull --force-rm -t digitalidentitylabs/ishigaku ."
 end
 
 task :test => [:build] do
