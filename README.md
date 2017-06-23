@@ -1,6 +1,6 @@
 # Ishigaki
 
-[![Build Status](https://travis-ci.org/Digital-Identity-Labs/ishigaki?branch=master)](https://travis-ci.org/Digital-Identity-Labs/ishigaki)
+[![Build Status](https://travis-ci.org/Digital-Identity-Labs/ishigaki.svg?branch=master)](https://travis-ci.org/Digital-Identity-Labs/ishigaki)
 
 ## A Big Warning!
 This project is **NOT** ready for production use yet.
