@@ -52,7 +52,7 @@ RUN echo "\n## Installing Java..." && \
 
 COPY optfs /opt
 
-RUN sync && chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh && sync
+RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
 
 
 EXPOSE     8080
