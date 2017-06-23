@@ -54,12 +54,6 @@ COPY optfs /opt
 
 RUN sync && chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh && sync
 
-ONBUILD COPY optfs /opt
-ONBUILD RUN idp_src/bin/install.sh -Didp.src.dir=/usr/local/src/idp_src -Didp.target.dir=/opt/shibboleth-idp \
-              -Didp.host.name=$IDP_HOSTNAME -Didp.scope=$IDP_SCOPE \
-              -Didp.sealer.password=password -Didp.keystore.password=password \
-              -Didp.noprompt=true -Didp.merge.properties=temp.properties && \
-              touch /tmp/OMGWTFBBQ
 
 EXPOSE     8080
 USER       jetty
