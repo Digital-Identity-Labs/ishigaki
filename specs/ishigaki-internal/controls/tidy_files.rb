@@ -46,7 +46,7 @@ control "tidy_files" do
   end
 
   %w[src.zip demo man sample].each do |cruft|
-    describe file(cruft) do
+    describe file("/usr/lib/jvm/zulu-8-amd64/#{cruft}") do
       it {should_not exist}
     end
   end

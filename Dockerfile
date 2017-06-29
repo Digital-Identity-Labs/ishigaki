@@ -1,7 +1,7 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A foundation image for Shibboleth IdP containers" \
-      version="0.1.0" \
+      version="0.1.2" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
@@ -46,6 +46,7 @@ RUN echo "\n## Installing Java..." && \
      -Didp.sealer.password=password -Didp.keystore.password=password \
      -Didp.noprompt=true -Didp.merge.properties=temp.properties  && \
     mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp && \
+    mkdir -p /var/cache/shibboleth-idp   && chown -R jetty /var/cache/shibboleth-idp   && \
     echo "\n## Tidying up..." && \
     rm -rf /usr/local/src/* && \
     apt-get remove --auto-remove --yes --allow-remove-essential gnupg dirmngr unzip
