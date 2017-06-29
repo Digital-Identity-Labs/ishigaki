@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2
+
+### Features
+- Created /var/cache/shibboleth-idp directory for storing file caches of remote data
+
+### Fixes
+- Fixed tests for removable Java JDK directories
+
 ## 0.1.1
 
 ### Fixes
