@@ -5,4 +5,7 @@ sudo: required
 services:
   - docker
 script:
-  - bundle exec rake
+  - bundle exec rake test
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - bundle exec rake push
