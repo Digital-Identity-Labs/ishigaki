@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- Scripts to deploy image to Docker Hub
+
 ## 0.1.2
 
 ### Features
