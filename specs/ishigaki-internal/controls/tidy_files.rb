@@ -14,7 +14,7 @@ control "tidy_files" do
     its('stdout') { should eq "1" }
   end
 
-  describe file('/opt/jetty/demo_base') do
+  describe file('/opt/jetty/demo-base') do
     it {should_not exist}
   end
 

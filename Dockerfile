@@ -33,7 +33,7 @@ RUN echo "\n## Installing Java..." && \
     curl -O $JETTY_URL && md5sum jetty-distribution-9.4.6.v20170531.tar.gz | grep $JETTY_CHECKSUM && \
     mkdir -p $JETTY_HOME && tar -zxf jetty-distribution-9.*.tar.gz -C $JETTY_HOME --strip-components 1 && \
     useradd --user-group --shell /bin/false --home-dir $JETTY_BASE jetty && \
-    rm -rf $JETTY_HOME/demo_base && \
+    rm -rf $JETTY_HOME/demo-base && \
     chown -R root $JETTY_HOME && \
     mkdir -p /var/opt/jetty/tmp && chown -R jetty /var/opt/jetty/tmp && \
     echo "\n## Installing Shibboleth IdP..." && \
