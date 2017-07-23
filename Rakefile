@@ -1,3 +1,5 @@
+base_name = "digitalidentity/ishigaku"
+snapshot_name = "#{base_name}:snapshot"
 
 task :default => :refresh
 
@@ -5,18 +7,18 @@ task :refresh => [:build, :test]
 
 desc "Build the image"
 task :build do
-  sh "docker build --pull -t digitalidentitylabs/ishigaku:snapshot ."
+  sh "docker build --pull -t #{snapshot_name} ."
 end
 
 desc "Rebuild the image"
 task :rebuild do
-  sh "docker build --pull --force-rm -t digitalidentitylabs/ishigaku:snapshot ."
+  sh "docker build --pull --force-rm -t #{snapshot_name} ."
 end
 
 desc "Build the image and test"
 task :test => [:build] do
   begin
-    sh "docker run -d -p 8080:8080 digitalidentitylabs/ishigaku:snapshot"
+    sh "docker run -d -p 8080:8080 #{snapshot_name}"
     container_id = `docker ps -q -l`
     sleep ENV['CI'] ? 20 : 10
     colour = ENV['CI'] ? "--no-color" : "--color"
@@ -27,7 +29,7 @@ task :test => [:build] do
 end
 
 task :shell => [:build] do
-  sh "docker run -d -p 8080:8080 digitalidentitylabs/ishigaku:snapshot"
+  sh "docker run -d -p 8080:8080 #{snapshot_name}"
   container_id = `docker ps -q -l`.chomp
   sh "docker exec -it #{container_id} /bin/bash"
 end
