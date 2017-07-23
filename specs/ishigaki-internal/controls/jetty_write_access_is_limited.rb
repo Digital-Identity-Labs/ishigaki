@@ -18,7 +18,7 @@ control "jetty_write_access_is_limited" do
     end
   end
 
-  %w[etc jetty start.d start.ini webapps].each do |dir|
+  %w[etc start.d start.ini webapps].each do |dir|
     describe file("/opt/jetty-shib/#{dir}") do
       its('owner') {should eq 'root'}
       its('group') {should eq 'root'}
