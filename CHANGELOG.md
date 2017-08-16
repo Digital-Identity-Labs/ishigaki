@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.5
+
+### Fixes
+
+- Turning off the JVM's silly default DNS caching. It's always a pain
+  but with Docker it's much worse.
+
 ## 0.1.4
 
 ### Fixes
