@@ -1,8 +1,8 @@
 # Ishigaki
 
 [![Build Status](https://travis-ci.org/Digital-Identity-Labs/ishigaki.svg?branch=master)](https://travis-ci.org/Digital-Identity-Labs/ishigaki)
-![Build Status](https://img.shields.io/docker/stars/digitalidentity/ishigaki.svg) 
-[![](https://images.microbadger.com/badges/image/digitalidentity/ishigaki.svg)](https://microbadger.com/images/digitalidentity/ishigaki "Get your own image badge on microbadger.com")
+[![Docker Stars](https://img.shields.io/docker/stars/digitalidentity/ishigaki.svg)](https://hub.docker.com/r/digitalidentity/ishigaki/) 
+[![Image Details](https://images.microbadger.com/badges/image/digitalidentity/ishigaki.svg)](https://microbadger.com/images/digitalidentity/ishigaki "Get your own image badge on microbadger.com")
 
 ## What is this?
 
