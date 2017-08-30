@@ -4,11 +4,15 @@
 
 ## What is this?
 
-Shibboleth Identity Provider is a mature, SAML-based single sign on (SSO) web application widely deployed in academic organisations. It's used by millions of staff and students around the world.
+Shibboleth Identity Provider is a mature, SAML-based single sign on (SSO) web application widely deployed in 
+academic organisations. It's used by millions of staff and students around the world.
 
-Ishigaki is a minimalist, Debian-based, Shibboleth IdP Docker image. It is maintained by Digital Identity Ltd. Ishigaki is intended to be a simple, solid foundation for other images but can also be used directly by mounting volumes for configuration directories.
+Ishigaki is a minimalist, Debian-based, Shibboleth IdP Docker image. It is maintained by Digital Identity Ltd. 
+Ishigaki is  intended to be a solid foundation for other images but can also be used directly by mounting volumes for configuration directories.
 
-This image is *not* a stand-alone production-ready IdP - it's meant to be used in conjunction with other services to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose, Rancher or Kubernetes. 
+This image is *not* a stand-alone production-ready IdP - it's meant to be used in conjunction with other services 
+to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose, Rancher or 
+Kubernetes. 
 
 ## Why use this?
 
@@ -32,45 +36,123 @@ This image is *not* a stand-alone production-ready IdP - it's meant to be used i
 
 ### Getting the image
 
-`docker #TODO `
+`docker pull digitalidentity/ishigaki`
 
 ### Configuring the IdP
 
 Copy the current configuration from a running container:
 
-`docker #TODO`
+`docker ps`  (then copy the container id)
 
-Or just grab the default IdP files from 
-
-docker #TODO`
+`copy cp 1739d2ec6159:/opt ./optfs`  (use your container id!)
 
 All the useful configuration for Ishigaki is in various /opt directories:
 
-#TODO
+  *  `admin` - this contains some internal tools
+  *  `jetty` - the global Jetty configuration.
+  *  `jetty-shib` - extra Jetty configuration files for running Shibboleth
+  *  `misc` - a few other files
+  *  `shibboleth-idp` - The Shibboleth IDP configuration
 
 Adjust these files to suit your use case - see the [Shibboleth IdP documentation](https://wiki.shibboleth.net/confluence/display/IDP30/Home) for lots more information.
 
-As you're probably copying these files over the top of existing files, you don't need to keep copies of files you aren't changing.
+As you're probably copying these files over the top of existing files, you don't need to keep copies of files you aren't changing. 
+You can usually not bother with the admin, jetty and misc directories. You will probably only need to change the jetty-shib directory
+if you are adding TLS or backchannel ports directly to the IdP, rather than using a proxy.
 
 ### Running Ishigaki with your configuration
 
-Then you can either build a child image that contains your configuration, like this
+Then you can either build an image that contains your configuration, like this
 
-`docker #TODO`
+```dockerfile
+FROM digitalidentity/ishigaki:latest
+# (Don't use latest in production)
+
+LABEL description="An example IdP image based on Ishigaki" \
+      version="0.0.1" \
+      maintainer="example@example.com"
+
+## The prepare_apps.sh script can use these - but they're not needed otherwise
+ENV IDP_HOSTNAME=idp.example.com \
+    IDP_SCOPE=example.com \
+    IDP_ID=https://idp.example.com/idp/shibboleth
+
+## Copy your configuration files over into the image
+COPY optfs /opt
+
+## This is an optional script to tidy up file permissions, etc.
+USER root
+RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
+
+## Switch back to the Jetty user
+USER jetty
+```
 
 Or run the Ishigaki image with mounted directories
 
-`docker #TODO`
+`docker run -v /home/bjensen/myshib/optfs/shibboleth-idp:/opt/shibboleth-idp digitalidentity/ishigaki`
 
 ### Using with Docker Compose
 
-Running a relatively bare Ishigaki on its own is only useful for some basic dev or testing work. It's far more useful when used with other Docker containers.
+Running a relatively bare Ishigaki container on its own is only useful for some basic dev or testing work. It's far more useful when used with other Docker containers.
 
-For example, a `docker-compose.yml` file like this can provide a basic IdP service:
+For example, a `docker-compose.yml` file like this can provide a basic IdP service, with TLS and LDAP:
 
-`Docker-compose file`
+```docker-compose
+version: '3'
+services:
+  frontend:
+    image: traefik:latest
+    command: --web --docker --docker.domain=docker.localhost --logLevel=DEBUG
+    ports:
+      - "443:443"
+      - "8080:8080"
+      - "8433:8443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./frontend/traefik.toml:/traefik.toml
+      - ./frontend/certs:/certs
+
+  ldap:
+    image: digitalidentity/eduldap:latest
+    labels:
+      - "traefik.enable=false"
+
+  idp:
+    image: digitalidentity/ishigaki:latest
+    volumes:
+     - ./idp/shibboleth-idp:/opt/shibboleth-idp
+    labels:
+      - "traefik.backend=idp"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.frontend.rule=Host:idp.localhost.demo.university"
+      - "traefik.frontend.entryPoints=https"
+      - "traefik.port=8080"
+      - "traefik.protocol=http"
+
+```
+
+(This is not going to work on its own - you'll need to use your own data, Traefik configuration, LDAP data, etc)
+
+### When building an image based on Ishigaki
+
+Possibly useful things:
+
+  * You can re-run the prepare_apps.sh script in /opt/admin/ to reset permissions after copying files (and replace it)
+  * The Ishigaki repository includes a set of InSpec specification tests - you can copy this directory to form the start your own
+   set of tests
+
+### Running without a reverse proxy
+
+Unlike most IdP images Ishigaki assumes it is behind a reverse proxy such as Apache HTTPD or Traefik. 
+The default configuration accepts and trusts some HTTP headers that it assumes carry information from the proxy.
+
+If you add TLS, backchannel ports, etc and run Ishigaki directly, without a proxy, please remove the configuration options 
+for these headers, or they may be a security risk for your service.
+
 
 ## Other Information
+
 
 ### What's Ishigaki Academic Edition?
 
@@ -98,9 +180,13 @@ Ishigaki are the impressive dry stone [foundation walls of Japanese castles](htt
 ### Contributing
 You can request new features by creating an [issue](https://github.com/Digital-Identity-Labs/ishigaki/issues), or submit a [pull request](https://github.com/Digital-Identity-Labs/ishigaki/pulls) with your contribution.
 
-If you have a support contract with Mimoto, please [contact Mimoto](http://mimoto.co.uk/contact/)
+The Ishigaki repo contains tests that you can use in your own projects. We're extra grateful for any contributions that 
+include tests.
+
+If you have a support contract with Mimoto, please [contact Mimoto](http://mimoto.co.uk/contact/) for assistance, rather
+ than use Github.
 
 ### License
-Copyright (c) 2017 Digital Identity Labs
+Copyright (c) 2017 Digital Identity Ltd, UK
 
 Licensed under the MIT License
