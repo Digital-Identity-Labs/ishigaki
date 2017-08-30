@@ -1,6 +1,8 @@
 # Ishigaki
 
 [![Build Status](https://travis-ci.org/Digital-Identity-Labs/ishigaki.svg?branch=master)](https://travis-ci.org/Digital-Identity-Labs/ishigaki)
+![Build Status](https://img.shields.io/docker/stars/digitalidentity/ishigaki.svg) 
+[![](https://images.microbadger.com/badges/image/digitalidentity/ishigaki.svg)](https://microbadger.com/images/digitalidentity/ishigaki "Get your own image badge on microbadger.com")
 
 ## What is this?
 
@@ -16,11 +18,11 @@ Kubernetes.
 
 ## Why use this?
 
-* Modern: uses the latest Shibboleth IdP, Jetty and Debian OS.
-* Small: Based on Minideb and built carefully, Ishigaki is only around 350MB and the download is under 180MB
-* Secure: Updated daily, nothing runs as root, and directory permissions are managed
-* Tested: Ishigaki is built and tested automatically
-* Actively maintained: We use this image ourselves
+* **Modern**: uses the latest Shibboleth IdP, Jetty and Debian OS.
+* **Small**: based on Minideb and built carefully, Ishigaki is only around 350MB and the download is under 180MB
+* **Secure**: updated daily, nothing runs as root, and directory permissions are managed
+* **Tested**: Ishigaki is built and tested automatically
+* **Maintained**: we use this image ourselves
 
 
 ## Any reasons not to use this?
