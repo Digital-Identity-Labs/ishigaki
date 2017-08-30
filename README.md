@@ -6,14 +6,15 @@
 
 ## What is this?
 
-Shibboleth Identity Provider is a mature, SAML-based single sign on (SSO) web application widely deployed in 
-academic organisations. It's used by millions of staff and students around the world.
+[Shibboleth Identity Provider](https://www.shibboleth.net/products/identity-provider/) is a mature, SAML-based 
+single sign on (SSO) web application widely deployed in academic organisations. It's used by millions of staff and 
+students around the world.
 
-Ishigaki is a minimalist, Debian-based, Shibboleth IdP Docker image. It is maintained by Digital Identity Ltd. 
-Ishigaki is  intended to be a solid foundation for other images but can also be used directly by mounting volumes for configuration directories.
+Ishigaki is a minimalist, Debian-based, Shibboleth IdP Docker image. It is maintained by [Digital Identity Ltd.](http://digitalidentity.ltd.uk/) 
+Ishigaki is intended to be a solid foundation for other images but can also be used directly by mounting volumes for configuration directories.
 
-This image is *not* a stand-alone production-ready IdP - it's meant to be used in conjunction with other services 
-to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose, Rancher or 
+This image is *not* a stand-alone production-ready IdP - it's meant to be configured and then used in conjunction with
+ other services to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose, Rancher or 
 Kubernetes. 
 
 ## Why use this?
@@ -27,9 +28,11 @@ Kubernetes.
 
 ## Any reasons not to use this?
 
-* It is *not* ready-to-use, and there is no UI or simplified configuration: you need to understand how to configure a Shibboleth IdP
+* It is *not* ready-to-use, and there is no UI or simplified configuration: you need to understand how to configure a 
+Shibboleth IdP
 * It's got no warranty or support (but see Ishigaki Academic Edition details below)
-* It does not use the official Oracle JDK - it uses a high quality JDK from Zulu, but Shibboleth community support may depend on using Oracle's software (again, see below for other options)
+* It does not use the official Oracle JDK - it uses a high quality JDK from Zulu but Shibboleth community support may
+ depend on using Oracle's software (again, see below for other options)
 * It requires other supporting services to provide TLS and user information
 * Docker should not be used in production unless you have a reliable process for regularly updating images and replacing containers
 * It's relatively new - we expect to find more bugs 
@@ -54,9 +57,10 @@ All the useful configuration for Ishigaki is in various /opt directories:
   *  `jetty` - the global Jetty configuration.
   *  `jetty-shib` - extra Jetty configuration files for running Shibboleth
   *  `misc` - a few other files
-  *  `shibboleth-idp` - The Shibboleth IDP configuration
+  *  `shibboleth-idp` - the Shibboleth IDP configuration
 
-Adjust these files to suit your use case - see the [Shibboleth IdP documentation](https://wiki.shibboleth.net/confluence/display/IDP30/Home) for lots more information.
+Adjust these files to suit your use-case - see the
+ [Shibboleth IdP documentation](https://wiki.shibboleth.net/confluence/display/IDP30/Home) for lots more information.
 
 As you're probably copying these files over the top of existing files, you don't need to keep copies of files you aren't changing. 
 You can usually not bother with the admin, jetty and misc directories. You will probably only need to change the jetty-shib directory
@@ -64,7 +68,7 @@ if you are adding TLS or backchannel ports directly to the IdP, rather than usin
 
 ### Running Ishigaki with your configuration
 
-Then you can either build an image that contains your configuration, like this
+Then you can either build an image that contains your configuration, like this:
 
 ```dockerfile
 FROM digitalidentity/ishigaki:latest
@@ -90,7 +94,7 @@ RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
 USER jetty
 ```
 
-Or run the Ishigaki image with mounted directories
+or run the Ishigaki image with mounted directories
 
 `docker run -v /home/bjensen/myshib/optfs/shibboleth-idp:/opt/shibboleth-idp digitalidentity/ishigaki`
 
@@ -158,7 +162,7 @@ for these headers, or they may be a security risk for your service.
 
 ### What's Ishigaki Academic Edition?
 
-Ishigaki Academic Edition is a commercial, supported version of Ishigaki produced and supported by Mimoto Ltd. It can be used in exactly the same way, but has a few differences:
+Ishigaki Academic Edition is a commercial, supported version of Ishigaki produced and supported by [Mimoto Ltd](http://mimoto.co.uk). It can be used in exactly the same way, but has a few differences:
 
 * Includes remote or on-site support from Mimoto
 * Uses the official Oracle JDK
@@ -177,7 +181,8 @@ Ishigaki are the impressive dry stone [foundation walls of Japanese castles](htt
 
 ### Thanks
 * Ian Young's script to test Java crypto features has been included with his kind permission
-* We're just packaging huge amounts of work by [The Shibboleth Consortium](https://www.shibboleth.net/consortium/) and the wider Shibboleth community
+* We're just packaging huge amounts of work by [The Shibboleth Consortium](https://www.shibboleth.net/consortium/) and
+ the wider Shibboleth community. If your organisation depends on Shibboleth please consider supporting them.
 
 ### Contributing
 You can request new features by creating an [issue](https://github.com/Digital-Identity-Labs/ishigaki/issues), or submit a [pull request](https://github.com/Digital-Identity-Labs/ishigaki/pulls) with your contribution.
