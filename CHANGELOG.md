@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.6
+
+### Fixes
+
+- The Dockerfile USER now stays as root, so no need to switch to root and back to jetty in
+  your own images. Jetty continues to run as the jetty user.
+- Jetty should receive signals properly (or at least better than before). This means
+  shutdown is much faster and cleaner.
+
+### Documentation
+
+- Added badges to the Readme file
+- Added warnings about overwriting prepare_apps.sh to the documentation
+- Adjusted the example Dockerfile now that switching users is not needed
+
+### Known Bugs
+- One test has been disabled since netstat no longer names the jetty process properly.
+
 ## 0.1.5
 
 ### Fixes
