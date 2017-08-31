@@ -59,6 +59,6 @@ RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
 EXPOSE     8080
 WORKDIR    $JETTY_BASE
 
-ENTRYPOINT ["gosu", "jetty:jetty", "/usr/bin/java", "-jar", "/opt/jetty/start.jar"]
+ENTRYPOINT exec gosu jetty:jetty /usr/bin/java -jar ${JETTY_HOME}/start.jar
 
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/idp/status || exit 1
