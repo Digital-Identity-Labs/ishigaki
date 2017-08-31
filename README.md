@@ -53,7 +53,7 @@ Copy the current configuration from a running container:
 
 All the useful configuration for Ishigaki is in various /opt directories:
 
-  *  `admin` - this contains some internal tools
+  *  `admin` - this contains some internal tools. 
   *  `jetty` - the global Jetty configuration.
   *  `jetty-shib` - extra Jetty configuration files for running Shibboleth
   *  `misc` - a few other files
@@ -65,6 +65,8 @@ Adjust these files to suit your use-case - see the
 As you're probably copying these files over the top of existing files, you don't need to keep copies of files you aren't changing. 
 You can usually not bother with the admin, jetty and misc directories. You will probably only need to change the jetty-shib directory
 if you are adding TLS or backchannel ports directly to the IdP, rather than using a proxy.
+
+If you copy over scripts in admin/ they will stop working until you use `chmod a+x /opt/admin/*.sh` to fix them. 
 
 ### Running Ishigaki with your configuration
 
@@ -87,11 +89,8 @@ ENV IDP_HOSTNAME=idp.example.com \
 COPY optfs /opt
 
 ## This is an optional script to tidy up file permissions, etc.
-USER root
-RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
+RUN $ADMIN_HOME/prepare_apps.sh
 
-## Switch back to the Jetty user
-USER jetty
 ```
 
 or run the Ishigaki image with mounted directories
@@ -142,11 +141,14 @@ services:
 
 ### When building an image based on Ishigaki
 
-Possibly useful things:
+Possibly useful things to know:
 
   * You can re-run the prepare_apps.sh script in /opt/admin/ to reset permissions after copying files (and replace it)
   * The Ishigaki repository includes a set of InSpec specification tests - you can copy this directory to form the start your own
    set of tests
+  * If you copy new files over the admin scripts (such as prepare_apps.sh) they'll need their executable permissions
+   setting again before they can be run: if you replace prepare_apps.sh it won't work until this is done. 
+  
 
 ### Running without a reverse proxy
 
