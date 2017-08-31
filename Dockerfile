@@ -1,7 +1,7 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A foundation image for Shibboleth IdP containers" \
-      version="0.1.5" \
+      version="0.1.6" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
@@ -54,7 +54,6 @@ RUN echo "\n## Installing Java..." && \
 COPY optfs /opt
 
 RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
-
 
 EXPOSE     8080
 WORKDIR    $JETTY_BASE
