@@ -1,7 +1,7 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A foundation image for Shibboleth IdP containers" \
-      version="0.1.5" \
+      version="0.1.6" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
@@ -24,7 +24,7 @@ RUN echo "\n## Installing Java..." && \
     install_packages gnupg dirmngr && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0x219BD9C9 && \
     echo "deb http://repos.azulsystems.com/debian stable  main" >> /etc/apt/sources.list.d/zulu.list && \
     echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list.d/backports.list && \
-    install_packages zulu-8 curl unzip procps net-tools && \
+    install_packages zulu-8 curl unzip procps net-tools gosu && \
     rm -rf $JAVA_HOME/*.zip $JAVA_HOME/demo $JAVA_HOME/man $JAVA_HOME/sample && \
     curl -O $JCE_URL && md5sum ZuluJCEPolicies.zip | grep $JCE_CHECKSUM && \
     unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-amd64/jre/lib/security/ && \
@@ -55,10 +55,9 @@ COPY optfs /opt
 
 RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
 
-
 EXPOSE     8080
-USER       jetty
 WORKDIR    $JETTY_BASE
-CMD java -jar $JETTY_HOME/start.jar
+
+ENTRYPOINT exec gosu jetty:jetty /usr/bin/java -jar ${JETTY_HOME}/start.jar
 
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/idp/status || exit 1
