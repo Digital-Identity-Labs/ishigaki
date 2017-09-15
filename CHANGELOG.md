@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+### Improvements
+
+- The `prepare_apps.sh` script now has a "rebuild" option that will
+  rebuild the IdP's .war file, using files in edit-webapp.
+
 ## 0.1.6
 
 ### Fixes
