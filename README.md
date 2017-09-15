@@ -143,11 +143,13 @@ services:
 
 Possibly useful things to know:
 
-  * You can re-run the prepare_apps.sh script in /opt/admin/ to reset permissions after copying files (and replace it)
+  * You can re-run the `prepare_apps.sh` script in /opt/admin/ to reset permissions after copying files (and replace it)
+  * If you pass the "rebuild" option to `prepare_apps.sh` like this (`/opt/admin/prepare_apps.sh rebuild`) it will also
+    repackage the IdP .war file, including any customised views or libraries you may have added to the edit-webapp directory
   * The Ishigaki repository includes a set of InSpec specification tests - you can copy this directory to form the start your own
    set of tests
   * If you copy new files over the admin scripts (such as prepare_apps.sh) they'll need their executable permissions
-   setting again before they can be run: if you replace prepare_apps.sh it won't work until this is done. 
+   setting again before they can be run: if you replace prepare_apps.sh it won't run directly until this is done. 
   
 
 ### Running without a reverse proxy
