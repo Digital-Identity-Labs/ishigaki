@@ -1,16 +1,16 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A foundation image for Shibboleth IdP containers" \
-      version="0.2.0" \
+      version="0.3.0" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
 ARG JCE_CHECKSUM="ebe83e1bf25de382ce093cf89e93a944"
-ARG JETTY_URL=http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.6.v20170531/jetty-distribution-9.4.6.v20170531.tar.gz
-ARG JETTY_CHECKSUM=a99c534c5029127cd2f78c666e0910fd
+ARG JETTY_URL=http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.7.v20170914/jetty-distribution-9.4.7.v20170914.tar.gz
+ARG JETTY_CHECKSUM=22d76fabe84bb0c15ab278a44a8e1ade
 ARG SRC_DIR=/usr/local/src
-ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.3.1.tar.gz
-ARG IDP_CHECKSUM=80ddc32401fe3b5b9e0e04ae2f11dd73
+ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.3.2.tar.gz
+ARG IDP_CHECKSUM=d75ec4a267aa3f690ba8745e5c8e3496
 
 ENV JAVA_HOME=/usr/lib/jvm/zulu-8-amd64 \
     JETTY_HOME=/opt/jetty JETTY_BASE=/opt/jetty-shib \
@@ -30,7 +30,7 @@ RUN echo "\n## Installing Java..." && \
     unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-amd64/jre/lib/security/ && \
     echo "By using this software you agree to http://www.azul.com/products/zulu/zulu-terms-of-use/" && \
     echo "\n## Installing Jetty..." && \
-    curl -O $JETTY_URL && md5sum jetty-distribution-9.4.6.v20170531.tar.gz | grep $JETTY_CHECKSUM && \
+    curl -O $JETTY_URL && md5sum jetty-distribution-9.4.7.v20170914.tar.gz | grep $JETTY_CHECKSUM && \
     mkdir -p $JETTY_HOME && tar -zxf jetty-distribution-9.*.tar.gz -C $JETTY_HOME --strip-components 1 && \
     useradd --user-group --shell /bin/false --home-dir $JETTY_BASE jetty && \
     rm -rf $JETTY_HOME/demo-base && \
