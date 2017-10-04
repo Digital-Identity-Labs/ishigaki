@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+
+### Improvements
+
+- Shibboleth IdP [updated to 3.3.2](https://wiki.shibboleth.net/confluence/display/IDP30/ReleaseNotes#ReleaseNotes-3.3.2(October4,2017)), which fixes a security bug in LDAP library and updates Duo support 
+- Jetty is updated too, to [9.4.7.v20170914](https://github.com/eclipse/jetty.project/releases/tag/jetty-9.4.7.v20170914), a bugfix release.
+
 ## 0.2.0
 
 ### Improvements
