@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+### Fixes
+
+- Ruby version fixed (changed to 2.4) in Travis CI build config (it was incorrectly at 2.2)
+
 ## 0.3.0
 
 ### Improvements
