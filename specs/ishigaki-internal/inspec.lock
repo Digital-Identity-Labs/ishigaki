@@ -1,3 +1,8 @@
 ---
 lockfile_version: 1
-depends: []
+depends:
+- name: ishigaki
+  resolved_source:
+    git: https://github.com/Digital-Identity-Labs/ishigaki-spec
+    ref: dd570ca45ae91a342176fdee3af481c2862aac3e
+  version_constraints: ">= 0"
