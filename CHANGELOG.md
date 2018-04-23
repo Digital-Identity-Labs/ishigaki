@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.2
+
+### Tests
+
+- Moved all inSpec tests over to their own repo. They can now be resused by other Ishigaki-based projects. 
+
+## 0.3.1
+
+### Fixes
+
+- Ruby version fixed (changed to 2.4) in Travis CI build config (it was incorrectly at 2.2)
+
 ## 0.3.0
 
 ### Improvements
