@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.3
+
+### Fixes
+
+- Updated to Shibboleth 3.3.3, which contains a fix for a CAS vulnerability
+
 ## 0.3.2
 
 ### Tests

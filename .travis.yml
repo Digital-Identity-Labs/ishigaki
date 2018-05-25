@@ -7,5 +7,5 @@ services:
 script:
   - bundle exec rake test
 after_success:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
   - bundle exec rake push
