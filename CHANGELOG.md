@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.4
+
+### Improvements
+
+- Jetty updated to 9.4.11
+
 ## 0.3.3
 
 ### Fixes

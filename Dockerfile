@@ -1,13 +1,13 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A foundation image for Shibboleth IdP containers" \
-      version="0.3.3" \
+      version="0.3.4" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
 ARG JCE_CHECKSUM="ebe83e1bf25de382ce093cf89e93a944"
-ARG JETTY_URL=http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.7.v20170914/jetty-distribution-9.4.7.v20170914.tar.gz
-ARG JETTY_CHECKSUM=22d76fabe84bb0c15ab278a44a8e1ade
+ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.11.v20180605/jetty-distribution-9.4.11.v20180605.tar.gz
+ARG JETTY_CHECKSUM=d7fec79c46f40a5908df2c208a15473d
 ARG SRC_DIR=/usr/local/src
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.3.3.tar.gz
 ARG IDP_CHECKSUM=318ffa6b3992a17a0528a07a21c19865
@@ -24,13 +24,13 @@ RUN echo "\n## Installing Java..." && \
     install_packages gnupg dirmngr && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0x219BD9C9 && \
     echo "deb http://repos.azulsystems.com/debian stable  main" >> /etc/apt/sources.list.d/zulu.list && \
     echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list.d/backports.list && \
-    install_packages zulu-8 curl unzip procps net-tools gosu && \
+    install_packages zulu-8 curl unzip procps net-tools gosu ca-certificates && \
     rm -rf $JAVA_HOME/*.zip $JAVA_HOME/demo $JAVA_HOME/man $JAVA_HOME/sample && \
     curl -O $JCE_URL && md5sum ZuluJCEPolicies.zip | grep $JCE_CHECKSUM && \
     unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-amd64/jre/lib/security/ && \
     echo "By using this software you agree to http://www.azul.com/products/zulu/zulu-terms-of-use/" && \
     echo "\n## Installing Jetty..." && \
-    curl -O $JETTY_URL && md5sum jetty-distribution-9.4.7.v20170914.tar.gz | grep $JETTY_CHECKSUM && \
+    curl -O $JETTY_URL && md5sum jetty-distribution-9.4.11.v20180605.tar.gz | grep $JETTY_CHECKSUM && \
     mkdir -p $JETTY_HOME && tar -zxf jetty-distribution-9.*.tar.gz -C $JETTY_HOME --strip-components 1 && \
     useradd --user-group --shell /bin/false --home-dir $JETTY_BASE jetty && \
     rm -rf $JETTY_HOME/demo-base && \
