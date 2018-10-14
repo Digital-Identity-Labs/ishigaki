@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0
+
+### Improvements
+
+- Shibboleth IdP updated to 3.4.0 (including quite a few new features)
+
+### Tests
+
+- Tests no longer check the permissions on the webapp directory, as it's gone.
+
 ## 0.3.4
 
 ### Improvements

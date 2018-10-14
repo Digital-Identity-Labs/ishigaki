@@ -12,3 +12,4 @@ supports:
 depends:
  - name: ishigaki
    git:  https://github.com/Digital-Identity-Labs/ishigaki-spec
+   version: 0.3.0
