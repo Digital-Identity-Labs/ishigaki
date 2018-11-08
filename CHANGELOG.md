@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1
+
+### Fixes
+
+- Update IdP to 2.4.1 (a bugfix patch release)
+- Use latest version of inSpec for tests (3.0.n)
+
 ## 0.4.0
 
 ### Improvements
