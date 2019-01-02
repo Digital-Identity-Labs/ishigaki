@@ -1,10 +1,16 @@
 # Changelog
 
+## 0.4.2
+
+### Improvements
+
+- Shibboleth IdP updated to 3.4.2
+
 ## 0.4.1
 
 ### Fixes
 
-- Update IdP to 2.4.1 (a bugfix patch release)
+- Update IdP to 3.4.1 (a bugfix patch release)
 - Use latest version of inSpec for tests (3.0.n)
 
 ## 0.4.0

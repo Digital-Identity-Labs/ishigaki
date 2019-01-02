@@ -9,8 +9,8 @@ ARG JCE_CHECKSUM="ebe83e1bf25de382ce093cf89e93a944"
 ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.11.v20180605/jetty-distribution-9.4.11.v20180605.tar.gz
 ARG JETTY_CHECKSUM=d7fec79c46f40a5908df2c208a15473d
 ARG SRC_DIR=/usr/local/src
-ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.4.1.tar.gz
-ARG IDP_CHECKSUM=14a2ab039db800db5549a93f44a31827
+ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.4.2.tar.gz
+ARG IDP_CHECKSUM=420eb80115e76cd9be21671d60d12305
 
 ENV JAVA_HOME=/usr/lib/jvm/zulu-8-amd64 \
     JETTY_HOME=/opt/jetty JETTY_BASE=/opt/jetty-shib \
