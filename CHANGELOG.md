@@ -1,8 +1,14 @@
 # Changelog
 
+## 0.4.3
+
+### Fixes
+
+- Shibboleth IdP updated to 3.4.3 (no functionality changes, just bug fixes)
+
 ## 0.4.2
 
-### Improvements
+### Fixes
 
 - Shibboleth IdP updated to 3.4.2
 
