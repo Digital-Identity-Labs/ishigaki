@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.4
+
+
+### Improvements
+
+- Using Jetty 9.4.15 rather than 9.4.11
+- Updated test libraries
+
+### Fixes
+
+- No longer refering to Debian 8 backport packages (since OS is Debian 9)
+
 ## 0.4.3
 
 ### Fixes
