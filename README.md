@@ -45,11 +45,17 @@ Shibboleth IdP
 
 ### Configuring the IdP
 
-Copy the current configuration from a running container:
+Run the unconfigured IDP:
 
-`docker ps`  (then copy the container id)
+ docker run digitalidentity/ishigaki
 
-`copy cp 1739d2ec6159:/opt ./optfs`  (use your container id!)
+Copy the current configuration from the running container:
+
+`containerid=$(docker ps | grep ishigaki | awk '{print $1}')
+
+`docker cp $containerid:/opt ./optfs
+
+ docker stop $containerid
 
 All the useful configuration for Ishigaki is in various /opt directories:
 
