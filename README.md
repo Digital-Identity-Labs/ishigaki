@@ -47,7 +47,7 @@ Shibboleth IdP
 
 Run the unconfigured IDP:
 
- docker run digitalidentity/ishigaki
+`docker run digitalidentity/ishigaki`
 
 Copy the current configuration from the running container:
 ```bash
