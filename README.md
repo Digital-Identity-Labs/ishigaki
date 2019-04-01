@@ -50,12 +50,13 @@ Run the unconfigured IDP:
  docker run digitalidentity/ishigaki
 
 Copy the current configuration from the running container:
+```bash
+containerid=$(docker ps | grep ishigaki | awk '{print $1}')
 
-`containerid=$(docker ps | grep ishigaki | awk '{print $1}')
+docker cp $containerid:/opt ./optfs
 
-`docker cp $containerid:/opt ./optfs
-
- docker stop $containerid
+docker stop $containerid
+```
 
 All the useful configuration for Ishigaki is in various /opt directories:
 
