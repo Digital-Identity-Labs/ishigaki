@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.5
+
+### Improvements
+
+- Using Jetty 9.4.18 rather than 9.4.15
+- Shibboleth IdP updated to 3.4.4 (new LDAP driver option and bug fixes)
+
 ## 0.4.4
 
 
