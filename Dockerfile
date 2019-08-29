@@ -1,13 +1,13 @@
 FROM bitnami/minideb:latest
 
-LABEL description="A foundation image for Shibboleth IdP containers" \
-      version="0.4.5" \
+LABEL description="A small, elegant foundation image for Shibboleth IdP containers" \
+      version="0.4.6" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
 ARG JCE_CHECKSUM="ebe83e1bf25de382ce093cf89e93a944"
-ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.18.v20190429/jetty-distribution-9.4.18.v20190429.tar.gz
-ARG JETTY_CHECKSUM=ea64bcaf1b25a2be416122ca95b633c8
+ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.20.v20190813/jetty-distribution-9.4.20.v20190813.tar.gz
+ARG JETTY_CHECKSUM=a100695a49dacccf31b9c52925499c63
 ARG SRC_DIR=/usr/local/src
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.4.4.tar.gz
 ARG IDP_CHECKSUM=1aec94ceb215361769181618b72794c6
@@ -30,7 +30,7 @@ RUN echo "\n## Installing Java..." && \
     unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-amd64/jre/lib/security/ && \
     echo "By using this software you agree to http://www.azul.com/products/zulu/zulu-terms-of-use/" && \
     echo "\n## Installing Jetty..." && \
-    curl -O $JETTY_URL && md5sum jetty-distribution-9.4.18.v20190429.tar.gz | grep $JETTY_CHECKSUM && \
+    curl -O $JETTY_URL && md5sum jetty-distribution-9.4.20.v20190813.tar.gz | grep $JETTY_CHECKSUM && \
     mkdir -p $JETTY_HOME && tar -zxf jetty-distribution-9.*.tar.gz -C $JETTY_HOME --strip-components 1 && \
     useradd --user-group --shell /bin/false --home-dir $JETTY_BASE jetty && \
     rm -rf $JETTY_HOME/demo-base && \
@@ -48,8 +48,9 @@ RUN echo "\n## Installing Java..." && \
     mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp && \
     mkdir -p /var/cache/shibboleth-idp   && chown -R jetty /var/cache/shibboleth-idp   && \
     echo "\n## Tidying up..." && \
-    rm -rf /usr/local/src/* && \
-    apt-get remove --auto-remove --yes --allow-remove-essential gnupg dirmngr unzip
+    rm -rf /usr/local/src/*  && \
+    apt-get remove --auto-remove --yes --allow-remove-essential gnupg dirmngr unzip && \
+    rm -rf /var/lib/apt/lists
 
 COPY optfs /opt
 

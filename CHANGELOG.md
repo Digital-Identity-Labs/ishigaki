@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.6
+
+### Improvements
+
+- Using Jetty 9.4.20
+- Based on Debian 10 Buster (via MiniDeb)
+
 ## 0.4.5
 
 ### Improvements
