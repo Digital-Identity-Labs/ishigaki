@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.7
+
+### Improvements
+
+- Using Shibboleth IdP 3.4.5 (various bug fixes and a potential data-leak fix)
+
 ## 0.4.6
 
 ### Improvements

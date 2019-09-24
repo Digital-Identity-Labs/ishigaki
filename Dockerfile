@@ -1,7 +1,7 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A small, elegant foundation image for Shibboleth IdP containers" \
-      version="0.4.6" \
+      version="0.4.7" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
@@ -9,8 +9,8 @@ ARG JCE_CHECKSUM="ebe83e1bf25de382ce093cf89e93a944"
 ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.20.v20190813/jetty-distribution-9.4.20.v20190813.tar.gz
 ARG JETTY_CHECKSUM=a100695a49dacccf31b9c52925499c63
 ARG SRC_DIR=/usr/local/src
-ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.4.4.tar.gz
-ARG IDP_CHECKSUM=1aec94ceb215361769181618b72794c6
+ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.4.5.tar.gz
+ARG IDP_CHECKSUM=2af76c9338d67f904f4b18c7962a9200
 
 ENV JAVA_HOME=/usr/lib/jvm/zulu-8-amd64 \
     JETTY_HOME=/opt/jetty JETTY_BASE=/opt/jetty-shib \
