@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.8
+
+### Improvements
+
+- Shibboleth IdP 3.4.6 (various bug fixes)
+- Jetty 9.4.21 (also just a patch release)
+
 ## 0.4.7
 
 ### Improvements
