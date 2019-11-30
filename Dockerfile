@@ -1,13 +1,13 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A small, elegant foundation image for Shibboleth IdP containers" \
-      version="0.4.8" \
+      version="0.4.9" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG JCE_URL=http://cdn.azul.com/zcek/bin/ZuluJCEPolicies.zip
 ARG JCE_CHECKSUM="ebe83e1bf25de382ce093cf89e93a944"
-ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.21.v20190926/jetty-distribution-9.4.21.v20190926.tar.gz
-ARG JETTY_CHECKSUM=d01c196c9ab6c1a7c4ceca4f96c67dcf
+ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.24.v20191120/jetty-distribution-9.4.24.v20191120.tar.gz
+ARG JETTY_CHECKSUM=9a36626b2f56f4da0a655e964eb54939
 ARG SRC_DIR=/usr/local/src
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-3.4.6.tar.gz
 ARG IDP_CHECKSUM=84097f1250040150d1ea3dd3acfc94f6
@@ -30,7 +30,7 @@ RUN echo "\n## Installing Java..." && \
     unzip ZuluJCEPolicies.zip && mv ZuluJCEPolicies/*.jar /usr/lib/jvm/zulu-8-amd64/jre/lib/security/ && \
     echo "By using this software you agree to http://www.azul.com/products/zulu/zulu-terms-of-use/" && \
     echo "\n## Installing Jetty..." && \
-    curl -O $JETTY_URL && md5sum jetty-distribution-9.4.21.v20190926.tar.gz | grep $JETTY_CHECKSUM && \
+    curl -O $JETTY_URL && md5sum jetty-distribution-9.4.24.v20191120.tar.gz | grep $JETTY_CHECKSUM && \
     mkdir -p $JETTY_HOME && tar -zxf jetty-distribution-9.*.tar.gz -C $JETTY_HOME --strip-components 1 && \
     useradd --user-group --shell /bin/false --home-dir $JETTY_BASE jetty && \
     rm -rf $JETTY_HOME/demo-base && \

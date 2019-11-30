@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.9
+
+### Improvements
+
+- Jetty 9.4.24 (patch release with various bug fixes)
+
 ## 0.4.8
 
 ### Improvements
