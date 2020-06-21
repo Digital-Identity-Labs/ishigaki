@@ -60,7 +60,6 @@
     <logger name="net.shibboleth.idp.log.LogbackLoggingService" level="${idp.loglevel.props}" />
 
     <!-- Especially chatty. -->
-    <logger name="net.shibboleth.idp.saml.attribute.mapping" level="INFO" />
     <logger name="org.apache.xml.security" level="${idp.loglevel.xmlsec}" />
     <logger name="org.springframework" level="${idp.loglevel.spring}"/>
     <logger name="org.apache.catalina" level="${idp.loglevel.container}"/>
