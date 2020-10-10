@@ -55,7 +55,7 @@ RUN echo "\n## Installing Shibboleth IdP..." && \
     mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp && \
     mkdir -p /var/cache/shibboleth-idp   && chown -R jetty /var/cache/shibboleth-idp   && \
     rm -rf /usr/local/src/* && \
-    if [ "${EDWIN_STARR}" -gt "0" ] ; then rm -rfv $IDP_HOME/war/* ; fi
+    if [ "${EDWIN_STARR}" -gt "0" ] ; then rm -fv $IDP_HOME/war/* ; fi
 
 COPY optfs /opt
 
