@@ -10,6 +10,7 @@ ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distributio
 ARG JETTY_CHECKSUM=01871f2ccffe70b99a4de95411576cc12d0b581b
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest4/shibboleth-identity-provider-4.0.1.tar.gz
 ARG IDP_CHECKSUM=832f73568c5b74a616332258fd9dc555bb20d7dd9056c18dc0ccf52e9292102a
+ARG EDWIN_STARR=0
 
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto \
     JETTY_HOME=/opt/jetty JETTY_BASE=/opt/jetty-shib \
@@ -53,7 +54,8 @@ RUN echo "\n## Installing Shibboleth IdP..." && \
       -Didp.noprompt=true -Didp.merge.properties=$SRC_DIR/temp.properties  && \
     mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp && \
     mkdir -p /var/cache/shibboleth-idp   && chown -R jetty /var/cache/shibboleth-idp   && \
-    rm -rf /usr/local/src/*
+    rm -rf /usr/local/src/* && \
+    if [ "${EDWIN_STARR}" -gt "0" ] ; then rm -rfv $IDP_HOME/war/* ; fi
 
 COPY optfs /opt
 
