@@ -6,10 +6,12 @@ LABEL description="A small, elegant foundation image for Shibboleth IdP containe
 
 ARG SRC_DIR=/usr/local/src
 ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
-ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.29.v20200521/jetty-distribution-9.4.29.v20200521.tar.gz
-ARG JETTY_CHECKSUM=01871f2ccffe70b99a4de95411576cc12d0b581b
+ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.32.v20200930/jetty-distribution-9.4.32.v20200930.tar.gz
+ARG JETTY_CHECKSUM=b7925b37e0ab6264bfbdf51a2b9167cb957c46f4
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest4/shibboleth-identity-provider-4.0.1.tar.gz
 ARG IDP_CHECKSUM=832f73568c5b74a616332258fd9dc555bb20d7dd9056c18dc0ccf52e9292102a
+ARG SPASS=password
+ARG KPASS=password
 ARG EDWIN_STARR=0
 
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto \
@@ -50,7 +52,7 @@ RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
     echo "idp.entityID=$IDP_ID" > $SRC_DIR/temp.properties && \
     idp_src/bin/install.sh -Didp.src.dir=/usr/local/src/idp_src -Didp.target.dir=/opt/shibboleth-idp \
       -Didp.host.name=$IDP_HOSTNAME -Didp.scope=$IDP_SCOPE \
-      -Didp.sealer.password=password -Didp.keystore.password=password \
+      -Didp.sealer.password=$SPASS -Didp.keystore.password=$KPASS \
       -Didp.noprompt=true -Didp.merge.properties=$SRC_DIR/temp.properties  && \
     mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp && \
     mkdir -p /var/cache/shibboleth-idp   && chown -R jetty /var/cache/shibboleth-idp   && \
