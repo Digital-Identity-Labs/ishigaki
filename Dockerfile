@@ -22,7 +22,7 @@ WORKDIR $SRC_DIR
 
 COPY aptfs .
 
-RUN echo "\n## Installing Java..." && \
+RUN echo "\n## Installing Java..." > /dev/stdout && \
     install_packages gnupg curl unzip procps net-tools gosu ca-certificates && \
     apt-key add corretto.key && \
     cp sources.list /etc/apt/ && \
@@ -32,7 +32,7 @@ RUN echo "\n## Installing Java..." && \
     rm -rf /var/lib/apt/lists && \
     rm -rf /usr/local/src/*
 
-RUN echo "\n## Installing Jetty..." && \
+RUN echo "\n## Installing Jetty..." > /dev/stdout && \
     curl -o jetty.tgz $JETTY_URL && \
     echo "${JETTY_CHECKSUM} jetty.tgz" > jetty.tgz.sha1 && sha1sum -c jetty.tgz.sha1 && \
     mkdir -p $JETTY_HOME && tar -zxf jetty.tgz -C $JETTY_HOME --strip-components 1 && \
@@ -42,7 +42,7 @@ RUN echo "\n## Installing Jetty..." && \
     mkdir -p /var/opt/jetty/tmp && chown -R jetty /var/opt/jetty/tmp && \
     rm -rf /usr/local/src/*
 
-RUN echo "\n## Installing Shibboleth IdP..." && \
+RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
     curl -o idp.tgz $IDP_URL && \
     echo "${IDP_CHECKSUM} idp.tgz" > idp.tgz.sha256 && sha256sum -c idp.tgz.sha256 && \
     mkdir -p idp_src && tar -zxf idp.tgz -C idp_src --strip-components 1 && \
@@ -59,7 +59,8 @@ RUN echo "\n## Installing Shibboleth IdP..." && \
 
 COPY optfs /opt
 
-RUN chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
+RUN echo "\n## Setting permissions and building IdP .war file..." > /dev/stdout && \
+    chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
 
 EXPOSE     8080
 WORKDIR    $JETTY_BASE
