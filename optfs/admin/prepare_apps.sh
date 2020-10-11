@@ -3,7 +3,6 @@
 ## Fail unless all env variables are set
 set -u
 
-
 ## Carry out all steps as one command, to return a failure code if something goes wrong
 reset_permissions () {
   printf "Resetting IdP's filesystem permissions... " && \

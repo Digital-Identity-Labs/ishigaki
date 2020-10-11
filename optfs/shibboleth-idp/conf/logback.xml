@@ -13,13 +13,13 @@
     <variable file="${idp.home}/conf/idp.properties" />
 
     <!-- Location and retention. -->
-    
-    <variable name="idp.logfiles" value="${idp.logfiles:-${idp.home}/logs}" />
+
+    <variable name="idp.logfiles" value="${idp.home}/logs" />
     <variable name="idp.loghistory" value="${idp.loghistory:-180}" />
-    
+
     <!-- Much higher performance if you operate on DEBUG. -->
     <!-- <variable name="idp.process.appender" value="ASYNC_PROCESS" /> -->
-    
+
     <!-- Logging level shortcuts. -->
     <variable name="idp.loglevel.idp" value="${idp.loglevel.idp:-INFO}" />
     <variable name="idp.loglevel.ldap" value="${idp.loglevel.ldap:-WARN}" />
@@ -28,7 +28,7 @@
     <variable name="idp.loglevel.opensaml" value="${idp.loglevel.opensaml:-INFO}" />
     <variable name="idp.loglevel.props" value="${idp.loglevel.props:-INFO}" />
     <variable name="idp.loglevel.httpclient" value="${idp.loglevel.httpclient:-INFO}" />
-    
+
     <!-- Don't turn these up unless you want a *lot* of noise. -->
     <variable name="idp.loglevel.spring" value="${idp.loglevel.spring:-ERROR}" />
     <variable name="idp.loglevel.container" value="${idp.loglevel.container:-ERROR}" />
@@ -43,13 +43,13 @@
 
     <!-- Logs OpenSAML, but not IdP, messages -->
     <logger name="org.opensaml.saml" level="${idp.loglevel.opensaml}"/>
-    
+
     <!-- Logs LDAP related messages -->
     <logger name="org.ldaptive" level="${idp.loglevel.ldap}"/>
 
     <!-- Logs embedded HTTP client messages -->
     <logger name="org.apache.http" level="${idp.loglevel.httpclient}"/>
-    
+
     <!-- Logs inbound and outbound protocols messages at DEBUG level -->
     <logger name="PROTOCOL_MESSAGE" level="${idp.loglevel.messages}" />
 
@@ -60,7 +60,6 @@
     <logger name="net.shibboleth.idp.log.LogbackLoggingService" level="${idp.loglevel.props}" />
 
     <!-- Especially chatty. -->
-    <logger name="net.shibboleth.idp.saml.attribute.mapping" level="INFO" />
     <logger name="org.apache.xml.security" level="${idp.loglevel.xmlsec}" />
     <logger name="org.springframework" level="${idp.loglevel.spring}"/>
     <logger name="org.apache.catalina" level="${idp.loglevel.container}"/>
@@ -92,7 +91,7 @@
             <evaluator>
                 <matcher>
                     <Name>VelocityStatusMatcher</Name>
-                    <regex>ResourceManager : unable to find resource 'status.vm' in any resource loader.</regex>
+                    <regex>ResourceManager\s*: unable to find resource 'status\.vm' in any resource loader\.</regex>
                 </matcher>
                 <expression>VelocityStatusMatcher.matches(formattedMessage)</expression>
             </evaluator>
@@ -110,12 +109,17 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
         </filter>
-        
+
         <File>${idp.logfiles}/idp-warn.log</File>
-        
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.logfiles}/idp-warn-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>${idp.loghistory}</maxHistory>
+        </rollingPolicy>
+
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <charset>UTF-8</charset>
-            <Pattern>%date{ISO8601} - %mdc{idp.remote_addr} - %level [%logger:%line] - %msg%n%ex{short}</Pattern>
+            <Pattern>%date{ISO8601} - %mdc{idp.remote_addr} - %level [%logger:%line] - %msg%n%ex{full}</Pattern>
         </encoder>
         
         <!-- Ignore Velocity status page error. -->
@@ -123,7 +127,7 @@
             <evaluator>
                 <matcher>
                     <Name>VelocityStatusMatcher</Name>
-                    <regex>ResourceManager : unable to find resource 'status.vm' in any resource loader.</regex>
+                    <regex>ResourceManager\s*: unable to find resource 'status\.vm' in any resource loader\.</regex>
                 </matcher>
                 <expression>VelocityStatusMatcher.matches(formattedMessage)</expression>
             </evaluator>
@@ -140,7 +144,7 @@
             <Pattern>%msg%n</Pattern>
         </encoder>
     </appender>
-    
+
     <!-- Consent audit log. -->
     <appender name="IDP_CONSENT_AUDIT" class="ch.qos.logback.core.ConsoleAppender">
         <File>${idp.logfiles}/idp-consent-audit.log</File>
@@ -152,12 +156,14 @@
     </appender>
 
     <!-- F-TICKS syslog destination. -->
-    <appender name="IDP_FTICKS" class="ch.qos.logback.core.ConsoleAppender">
+    <!--
+    <appender name="IDP_FTICKS" class="ch.qos.logback.classic.net.SyslogAppender">
         <syslogHost>${idp.fticks.loghost:-localhost}</syslogHost>
         <port>${idp.fticks.logport:-514}</port>
         <facility>AUTH</facility>
         <suffixPattern>[%thread] %logger %msg</suffixPattern>
     </appender>
+    -->
 
     <logger name="Shibboleth-Audit" level="ALL">
         <appender-ref ref="${idp.audit.appender:-IDP_AUDIT}"/>
@@ -170,7 +176,7 @@
     <logger name="Shibboleth-Consent-Audit" level="ALL">
         <appender-ref ref="${idp.consent.appender:-IDP_CONSENT_AUDIT}"/>
     </logger>
-    
+
     <root level="${idp.loglevel.root:-INFO}">
         <appender-ref ref="${idp.process.appender:-IDP_PROCESS}"/>
         <appender-ref ref="${idp.warn.appender:-IDP_WARN}" />

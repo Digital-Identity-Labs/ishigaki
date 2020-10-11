@@ -1,0 +1,4 @@
+deb http://deb.debian.org/debian buster main
+deb https://apt.corretto.aws stable main
+# deb-src https://apt.corretto.aws stable main
+deb http://security.debian.org/ buster/updates main

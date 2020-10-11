@@ -20,22 +20,20 @@ Kubernetes.
 ## Why use this?
 
 * **Modern**: uses the latest Shibboleth IdP, Jetty and Debian OS.
-* **Small**: based on Minideb and built carefully, Ishigaki is only around 350MB and the download is under 180MB
+* **Small**: based on Minideb and built carefully, Ishigaki is only around 400MB and the download is under 180MB
 * **Secure**: updated daily, nothing runs as root, and directory permissions are managed
 * **Tested**: Ishigaki is built and tested automatically
 * **Maintained**: we use this image ourselves
+* **Compliant**: follows Docker best practices 
 
 
 ## Any reasons not to use this?
 
-* It is *not* ready-to-use, and there is no UI or simplified configuration: you need to understand how to configure a 
-Shibboleth IdP
+* It is *not* ready-to-use, and there is no UI or simplified configuration: you need to understand how to configure a Shibboleth IdP
 * It's got no warranty or support (but see Ishigaki Academic Edition details below)
-* It does not use the official Oracle JDK - it uses a high quality JDK from Zulu but Shibboleth community support may
- depend on using Oracle's software (again, see below for other options)
+* It does not use the official Oracle JDK - it uses Amazon's own JDK
 * It requires other supporting services to provide TLS and user information
 * Docker should not be used in production unless you have a reliable process for regularly updating images and replacing containers
-* It's relatively new - we expect to find more bugs 
 
 ## Configuring and running Ishigaki
 
@@ -67,7 +65,7 @@ All the useful configuration for Ishigaki is in various /opt directories:
   *  `shibboleth-idp` - the Shibboleth IDP configuration
 
 Adjust these files to suit your use-case - see the
- [Shibboleth IdP documentation](https://wiki.shibboleth.net/confluence/display/IDP30/Home) for lots more information.
+ [Shibboleth IdP documentation](https://wiki.shibboleth.net/confluence/display/IDP4/Home) for lots more information.
 
 As you're probably copying these files over the top of existing files, you don't need to keep copies of files you aren't changing. 
 You can usually not bother with the admin, jetty and misc directories. You will probably only need to change the jetty-shib directory
@@ -178,7 +176,7 @@ for these headers, or they may be a security risk for your service.
 Ishigaki Academic Edition is a commercial, supported version of Ishigaki produced and supported by [Mimoto Ltd](http://mimoto.co.uk). It can be used in exactly the same way, but has a few differences:
 
 * Includes remote or on-site support from Mimoto
-* Uses the official Oracle JDK
+* Uses the official Oracle JDK (optional)
 * Releases are manually checked, and given additional, more intensive tests
 * Releases are signed, and available from a private repository
 
@@ -200,13 +198,12 @@ Ishigaki are the impressive dry stone [foundation walls of Japanese castles](htt
 ### Contributing
 You can request new features by creating an [issue](https://github.com/Digital-Identity-Labs/ishigaki/issues), or submit a [pull request](https://github.com/Digital-Identity-Labs/ishigaki/pulls) with your contribution.
 
-The Ishigaki repo contains tests that you can use in your own projects. We're extra grateful for any contributions that 
-include tests.
+The Ishigaki repo contains tests that you can use in your own projects. We're extra grateful for any contributions that include tests.
 
 If you have a support contract with Mimoto, please [contact Mimoto](http://mimoto.co.uk/contact/) for assistance, rather
  than use Github.
 
 ### License
-Copyright (c) 2017 Digital Identity Ltd, UK
+Copyright (c) 2017,2020 Digital Identity Ltd, UK
 
 Licensed under the MIT License
