@@ -4,7 +4,7 @@
 
 ### Improvements
 
-- Uses Shibboleth IdP v4.0.1: **This is a breaking change - configuration files will need to be replaced or upgraded**
+- Uses Shibboleth IdP v4.0.1: **This is a breaking change - configuration files will need to be replaced or upgraded**. Please read [the release notes for v4.0.0](https://wiki.shibboleth.net/confluence/display/IDP4/ReleaseNotes#ReleaseNotes-4.0.0(March11,2020)) 
 - Switched from Zulu 8 JDK to Amazon's Corretto 11 JDK
 - Jetty bumped to 9.4.32 (bug fixes)
 - Initial secrets can be passed with build arguments
