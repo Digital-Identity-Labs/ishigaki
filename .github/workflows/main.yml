@@ -9,6 +9,13 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Run InSpec tests on local image
+        steps:
+          - uses: actions/checkout@v2
+          - uses: actions/setup-ruby@v1
+            with:
+              ruby-version: 2.6.6
+          - run: bundle && bundle exec rake test
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
