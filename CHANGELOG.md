@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.0.0
+
+### Improvements
+
+- Uses Shibboleth IdP v4.0.1: **This is a breaking change - configuration files will need to be replaced or upgraded**
+- Switched from Zulu 8 JDK to Amazon's Corretto 11 JDK
+- Jetty bumped to 9.4.32 (bug fixes)
+- Initial secrets can be passed with build arguments
+- EDWIN_STARR build argument switch for when a .war is good for absolutely nothing
+- Improved and simplified Dockerfile
+
+### Fixes
+- Messages during Docker build now work correctly
+- Logging configuration ignores spurious Status.vm error messages
+
+### Tests
+
+- Using new version of test suite, updated to match new environment and IdP version
+
 ## 0.4.9
 
 ### Improvements
