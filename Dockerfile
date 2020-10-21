@@ -1,7 +1,7 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A small, elegant foundation image for Shibboleth IdP containers" \
-      version="1.0.0" \
+      version="1.1.0" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG SRC_DIR=/usr/local/src

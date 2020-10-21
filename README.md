@@ -6,16 +6,12 @@
 
 ## What is this?
 
-[Shibboleth Identity Provider](https://www.shibboleth.net/products/identity-provider/) is a mature, SAML-based 
-single sign on (SSO) web application widely deployed in academic organisations. It's used by millions of staff and 
-students around the world.
+[Shibboleth Identity Provider](https://www.shibboleth.net/products/identity-provider/) is a mature, SAML-based single sign on (SSO) web application widely deployed in academic organisations. It's used by millions of staff and students around the world.
 
 Ishigaki is a minimalist, Debian-based, Shibboleth IdP Docker image. It is maintained by [Digital Identity Ltd.](http://digitalidentity.ltd.uk/) 
 Ishigaki is intended to be a solid foundation for other images but can also be used directly by mounting volumes for configuration directories.
 
-This image is *not* a stand-alone production-ready IdP - it's meant to be configured and then used in conjunction with
- other services to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose, Rancher or 
-Kubernetes. 
+This image is *not* a stand-alone production-ready IdP - it's meant to be configured and then used in conjunction with other services to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose or Swarm, Rancher or Kubernetes. 
 
 ## Why use this?
 
