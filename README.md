@@ -16,7 +16,7 @@ This image is *not* a stand-alone production-ready IdP - it's meant to be config
 ## Why use this?
 
 * **Modern**: uses the latest Shibboleth IdP, Jetty and Debian OS.
-* **Small**: based on Minideb and built carefully, Ishigaki is only around 400MB and the download is under 180MB
+* **Small**: based on Minideb and built carefully, Ishigaki is only around 400MB and the download is under 280MB
 * **Secure**: updated daily, nothing runs as root, and directory permissions are managed
 * **Tested**: Ishigaki is built and tested automatically
 * **Maintained**: we use this image ourselves
