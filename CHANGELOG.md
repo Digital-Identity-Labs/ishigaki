@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Improvements
+
+- Jetty no longer sets `-Xmx1500m` as a JVM option so that memory usage can be controlled  using Docker's `--memory` option or Docker Compose's `deploy: resource:` settings. The previous behaviour can be restored by copying a tweaked start.ini to /opt/jetty-shib/
+
 ## 1.0.0
 
 ### Improvements
