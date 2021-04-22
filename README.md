@@ -11,7 +11,7 @@
 Ishigaki is a minimalist, Debian-based, Shibboleth IdP Docker image. It is maintained by [Digital Identity Ltd.](http://digitalidentity.ltd.uk/) 
 Ishigaki is intended to be a solid foundation for other images but can also be used directly by mounting volumes for configuration directories.
 
-This image is *not* a stand-alone production-ready IdP - it's meant to be configured and then used in conjunction with other services to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose or Swarm, Rancher or Kubernetes. 
+This image is *not* a stand-alone IdP service - it's meant to be configured and then used in conjunction with other services to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose or Swarm, Nomad or Kubernetes. 
 
 ## Why use this?
 
