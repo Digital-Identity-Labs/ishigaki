@@ -7,3 +7,8 @@ specs
 README.md
 Rakefile
 exported_defaults
+.gitignore
+.dockerignore
+.travis.yml
+.github
+
