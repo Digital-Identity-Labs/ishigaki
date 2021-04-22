@@ -22,7 +22,7 @@ task :test => [:build] do
     container_id = `docker ps -q -l`
     sleep ENV['CI'] ? 20 : 10
     colour = ENV['CI'] ? "--no-color" : "--color"
-    sh "bundle exec inspec exec specs/ishigaki-internal/ #{colour} -t docker://#{container_id} "
+    sh "bundle exec inspec exec specs/ishigaki-internal/ #{colour} -t docker://#{container_id} --chef-license accept"
   ensure
     sh "docker stop #{container_id}" if container_id
   end
