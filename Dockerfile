@@ -1,7 +1,6 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A small, elegant foundation image for Shibboleth IdP containers" \
-      version="2.0.0" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG SRC_DIR=/usr/local/src
@@ -31,6 +30,7 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto \
     JETTY_BASE=/opt/jetty-shib \
     ADMIN_HOME=/opt/admin \
     IDP_HOME=/opt/shibboleth-idp \
+    CREDS_GROUP=$CREDS_GROUP \
     WRITE_MD=1
 
 WORKDIR $SRC_DIR
