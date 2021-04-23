@@ -1,7 +1,7 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A small, elegant foundation image for Shibboleth IdP containers" \
-      version="1.2.0" \
+      version="2.0.0" \
       maintainer="pete@digitalidentitylabs.com"
 
 ARG SRC_DIR=/usr/local/src
@@ -11,6 +11,7 @@ ARG JETTY_CHECKSUM=fec94b66d7ec5b132d939f20186eae01db522ff3
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest4/shibboleth-identity-provider-4.1.0.tar.gz
 ARG IDP_CHECKSUM=46fe154859f9f1557acd1ae26ee9ac82ded938af52a7dec0b18adbf5bb4510e9
 ARG EDWIN_STARR=0
+ARG WRITE_MD=1
 
 ARG IDP_HOSTNAME=idp.example.com
 ARG IDP_ID=https://idp.example.com/idp/shibboleth
@@ -80,7 +81,11 @@ RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
       -Didp.initial.modules=$MODULES \
       -Didp.noprompt=true && \
     mkdir -p /var/opt/shibboleth-idp/tmp && chown -R jetty /var/opt/shibboleth-idp/tmp && \
-    mkdir -p /var/cache/shibboleth-idp   && chown -R jetty /var/cache/shibboleth-idp   && \
+    if [ "${WRITE_MD}" -gt "0" ] ; then mkdir -p $IDP_HOME/metadata && chown -R jetty $IDP_HOME/metadata ; fi && \
+    mkdir -p $IDP_HOME/metadata/local && chown -R root:root $IDP_HOME/metadata/local && \
+    mkdir -p $IDP_HOME/metadata/bilateral && chown -R root:root $IDP_HOME/metadata/bilateral && \
+    mkdir -p $IDP_HOME/metadata/federated && chown -R root:$CREDS_GROUP $IDP_HOME/metadata/federated && \
+    chmod -R g+w $IDP_HOME/metadata/federated && \
     mkdir -p $IDP_HOME/logs && chown -R jetty $IDP_HOME/logs && chmod 0770 $IDP_HOME/logs && \
     mkdir $ADMIN_HOME && \
     rm -rf /usr/local/src/* && \
@@ -88,8 +93,8 @@ RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
 
 COPY optfs /opt
 
-RUN echo "\n## Setting permissions and building IdP .war file..." > /dev/stdout && \
-    chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
+#RUN echo "\n## Setting permissions..." > /dev/stdout && \
+#    chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
 
 EXPOSE     8080
 WORKDIR    $JETTY_BASE
