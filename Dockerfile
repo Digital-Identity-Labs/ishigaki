@@ -11,7 +11,6 @@ ARG JETTY_CHECKSUM=fec94b66d7ec5b132d939f20186eae01db522ff3
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest4/shibboleth-identity-provider-4.1.0.tar.gz
 ARG IDP_CHECKSUM=46fe154859f9f1557acd1ae26ee9ac82ded938af52a7dec0b18adbf5bb4510e9
 ARG EDWIN_STARR=0
-ARG WRITE_MD=1
 
 ARG IDP_HOSTNAME=idp.example.com
 ARG IDP_ID=https://idp.example.com/idp/shibboleth
@@ -31,7 +30,8 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto \
     JETTY_HOME=/opt/jetty \
     JETTY_BASE=/opt/jetty-shib \
     ADMIN_HOME=/opt/admin \
-    IDP_HOME=/opt/shibboleth-idp
+    IDP_HOME=/opt/shibboleth-idp \
+    WRITE_MD=1
 
 WORKDIR $SRC_DIR
 
@@ -93,12 +93,9 @@ RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
 
 COPY optfs /opt
 
-#RUN echo "\n## Setting permissions..." > /dev/stdout && \
-#    chmod a+x $ADMIN_HOME/*.sh && sync && $ADMIN_HOME/prepare_apps.sh
-
 EXPOSE     8080
 WORKDIR    $JETTY_BASE
 
-ENTRYPOINT exec gosu jetty:jetty /usr/bin/java -jar ${JETTY_HOME}/start.jar
+ENTRYPOINT exec gosu jetty:$CREDS_MODE /usr/bin/java -jar ${JETTY_HOME}/start.jar
 
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://127.0.0.1:8080/idp/status || exit 1
