@@ -59,9 +59,17 @@ task :shell => [:build] do
   sh "docker exec -it #{container_id} /bin/bash"
 end
 
+task :export => [:build] do
+  sh "docker run -d -p 8080:8080 #{snapshot_name}"
+  container_id = `docker ps -q -l`.chomp
+  sh "mkdir -p exported_optfs/"
+  sh "docker cp #{container_id}:/opt/shibboleth-idp/ exported_optfs/shibboleth-idp"
+  sh "docker cp #{container_id}:/opt/jetty-shib/ exported_optfs/jetty-shib"
+end
+
 desc "Build and publish a Docker image to Github (it's usually better to use github:release)"
 task publish: [:build] do
-  
+
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"

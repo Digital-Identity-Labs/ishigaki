@@ -19,3 +19,4 @@ hs_err_pid*
 scratch/*
 /Gemfile.lock
 /exported_defaults
+/exported_optfs
