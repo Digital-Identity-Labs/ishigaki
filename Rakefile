@@ -65,6 +65,7 @@ task :export => [:build] do
   sh "mkdir -p exported_optfs/"
   sh "docker cp #{container_id}:/opt/shibboleth-idp/ exported_optfs/shibboleth-idp"
   sh "docker cp #{container_id}:/opt/jetty-shib/ exported_optfs/jetty-shib"
+  sh "docker stop #{container_id}"
 end
 
 desc "Build and publish a Docker image to Github (it's usually better to use github:release)"
