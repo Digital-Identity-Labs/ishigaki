@@ -10,7 +10,7 @@ ARG JETTY_CHECKSUM=fec94b66d7ec5b132d939f20186eae01db522ff3
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest4/shibboleth-identity-provider-4.1.0.tar.gz
 ARG IDP_CHECKSUM=46fe154859f9f1557acd1ae26ee9ac82ded938af52a7dec0b18adbf5bb4510e9
 ARG EDWIN_STARR=0
-ARG DELAY_WAR=1
+ARG DELAY_WAR=0
 
 ARG IDP_HOSTNAME=idp.example.com
 ARG IDP_ID=https://idp.example.com/idp/shibboleth
