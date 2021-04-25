@@ -10,6 +10,7 @@ ARG JETTY_CHECKSUM=fec94b66d7ec5b132d939f20186eae01db522ff3
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest4/shibboleth-identity-provider-4.1.0.tar.gz
 ARG IDP_CHECKSUM=46fe154859f9f1557acd1ae26ee9ac82ded938af52a7dec0b18adbf5bb4510e9
 ARG EDWIN_STARR=0
+ARG DELAY_WAR=1
 
 ARG IDP_HOSTNAME=idp.example.com
 ARG IDP_ID=https://idp.example.com/idp/shibboleth
@@ -24,6 +25,8 @@ ARG IDP_PROPERTIES_FILE="$SRC_DIR/idp.properties"
 ARG LDAP_PROPERTIES=""
 ARG LDAP_PROPERTIES_FILE="$SRC_DIR/ldap.properties"
 ARG MODULES="idp.authn.Password,idp.admin.Hello"
+ARG PLUGINS="https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/1.0.0/oidc-common-dist-1.0.0.tar.gz"
+ARG PLUGIN_MODULES=""
 
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto \
     JETTY_HOME=/opt/jetty \
@@ -89,6 +92,14 @@ RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
     mkdir -p $IDP_HOME/logs && chown -R jetty $IDP_HOME/logs && chmod 0770 $IDP_HOME/logs && \
     mkdir $ADMIN_HOME && \
     rm -rf /usr/local/src/* && \
+    if [ "${EDWIN_STARR}" -gt "0" ] || [ "${DELAY_WAR}" -gt "0" ] ; then rm -fv $IDP_HOME/war/* ; fi
+
+COPY plugins $SRC_DIR/plugins
+
+RUN echo "\n## Installing plugins and extra modules..." > /dev/stdout && \
+    cp -r $SRC_DIR/plugins/truststores/* $IDP_HOME/credentials && \
+    for plugin in $PLUGINS; do $IDP_HOME/bin/plugin.sh -i $plugin ; done && \
+    if [[ ! -z "${PLUGIN_MODULES}" ]] ; then $IDP_HOME/bin/modules.sh -i $MODULES ; $IDP_HOME/bin/modules.sh -e $MODULES ; fi && \
     if [ "${EDWIN_STARR}" -gt "0" ] ; then rm -fv $IDP_HOME/war/* ; fi
 
 COPY optfs /opt
