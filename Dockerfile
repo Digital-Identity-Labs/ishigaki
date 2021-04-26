@@ -25,7 +25,7 @@ ARG IDP_PROPERTIES_FILE="$SRC_DIR/idp.properties"
 ARG LDAP_PROPERTIES=""
 ARG LDAP_PROPERTIES_FILE="$SRC_DIR/ldap.properties"
 ARG MODULES="idp.authn.Password,idp.admin.Hello"
-ARG PLUGINS="https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/1.0.0/oidc-common-dist-1.0.0.tar.gz"
+ARG PLUGINS=""
 ARG PLUGIN_MODULES=""
 
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto \
