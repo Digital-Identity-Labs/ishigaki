@@ -15,11 +15,12 @@ by [Digital Identity Ltd.](http://digitalidentity.ltd.uk/)
 Ishigaki is intended to be a solid foundation for other images but can also be used directly by mounting volumes for
 configuration directories.
 
-The latest Ishigaki ias based around Shibboleth IdP v4.1.0, and has support for installing plugins and managing modules.
+The latest Ishigaki is based around Shibboleth IdP v4.1.0 and has support for installing plugins and managing modules.
 
 This image is *not* a ready-to-use, stand-alone IdP service - it's meant to be configured and then used in conjunction
 with other services to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose or
-Swarm, Nomad or Kubernetes.
+Swarm, Nomad or Kubernetes. Ishigaki aims to be a good Docker image with careful use of layers, correct signal handling,
+a non-root process, logging to STDOUT by default and a healthcheck.
 
 ## Why use this?
 
@@ -60,14 +61,14 @@ Three versions are available:
 ### Getting the image
 
 * `docker pull digitalidentity/ishigaki:latest` to get the latest default version from DockerHub
-* `docker pull ghcr.io/digital-identity-labs/ishigaki:latest-plus"` to get the latest plus version for Github
-* `docker pull ghcr.io/digital-identity-labs/ishigaki:latest-plus"` to get the latest plus version for Github
+* `docker pull ghcr.io/digital-identity-labs/ishigaki:latest-plus"` to get the latest plus version from Github
+* `docker pull ghcr.io/digital-identity-labs/ishigaki:2.0.0-base"` to get a specific base version from Github
 
 ### Configuring the IdP
 
-Run the unconfigured IDP:
+Run the unconfigured default IDP in the foreground, with a http port available:
 
-`docker run digitalidentity/ishigaki`
+`docker run -it -p 8080:8080 digitalidentity/ishigaki`
 
 Copy the current configuration from the running container:
 
@@ -99,7 +100,7 @@ the jetty-shib directory if you are adding TLS or backchannel ports directly to 
 Then you can either build an image that contains your configuration, like this:
 
 ```dockerfile
-FROM digitalidentity/ishigaki:latest
+FROM ghcr.io/digital-identity-labs/ishigaki:latest-base
 # (Don't use latest in production)
 
 LABEL description="An example IdP image based on Ishigaki" \
@@ -117,7 +118,7 @@ ENV IDP_HOSTNAME=idp.example.com \
     IDP_ID=https://idp.example.com/idp/shibboleth
 
 RUN for plugin in $PLUGINS; do $IDP_HOME/bin/plugin.sh -i $plugin ; done && \
-    IDP_HOME/bin/modules.sh -i $MODULES ; $IDP_HOME/bin/modules.sh -e $MODULES
+    $IDP_HOME/bin/module.sh -i $MODULES ; $IDP_HOME/bin/module.sh -e $MODULES
 
 ## Copy your configuration files over into the image
 COPY optfs /opt
