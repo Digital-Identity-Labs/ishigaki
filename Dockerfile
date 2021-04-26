@@ -99,7 +99,7 @@ COPY plugins $SRC_DIR/plugins
 RUN echo "\n## Installing plugins and extra modules..." > /dev/stdout && \
     cp -r $SRC_DIR/plugins/truststores/* $IDP_HOME/credentials && \
     for plugin in $PLUGINS; do $IDP_HOME/bin/plugin.sh -i $plugin ; done && \
-    if [[ ! -z "${PLUGIN_MODULES}" ]] ; then $IDP_HOME/bin/modules.sh -i $MODULES ; $IDP_HOME/bin/modules.sh -e $MODULES ; fi && \
+    if [[ ! -z "${PLUGIN_MODULES}" ]] ; then $IDP_HOME/bin/module.sh -i $MODULES ; $IDP_HOME/bin/module.sh -e $MODULES ; fi && \
     if [ "${EDWIN_STARR}" -gt "0" ] ; then rm -fv $IDP_HOME/war/* ; fi
 
 COPY optfs /opt
