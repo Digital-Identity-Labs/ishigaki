@@ -1,5 +1,36 @@
 # Changelog
 
+## 2.0.0
+
+Another significant update, with a new IdP and new Dockerfile features. The updated IdP brings plugin and module functionality, and the new Dockerfile is much more useful for building bespoke images.
+
+## Improvements
+
+- Uses Shibboleth IdP v4.1.0: **This is a breaking change - configuration files will need to be replaced or upgraded**. Please read [the release notes for v4.1.0](https://wiki.shibboleth.net/confluence/display/IDP4/ReleaseNotes#ReleaseNotes-4.1.0(March24,2021))
+- Jetty has been updated to v9.4.40  
+- The Dockerfile can be used to active or deactivate modules when building a new image
+- The Dockerfile can be used to build IdPs including plugins when building a new image
+- More installer settings can be configured using the Dockerfile
+- `rake build:base` builds a minimal image for use a base image 
+- `rake build:plus` builds an image with OIDC, TOTP and Javascript plugins
+- `rake build:all` builds default, plus and base images
+- `rake export` copies the configuration out of the default image
+- The new plugins directory can be used to install plugin archives (local or remote) and truststores during a build
+
+## Deprecations
+- The `prepare_apps.sh` script is now deprecated and is (fingers crossed)  no longer needed. The Shibboleth IdP installer will now set the correct permissions on credentials, and `bin/build.sh` 
+  should be used to rebuild the .war.
+
+## Releases
+- Travis is no longer used as a CI to build Ishigaki images
+- Images are now available from Github as well as from Dockerhub. Only the default image is available at Docker Hub.
+  
+## Tests
+- Using tweaked test suite, updated to match new IdP version.
+
+## Known Issues
+- The new images are now considerably larger (especially the plus version)
+
 ## 1.1.0
 
 ### Improvements
