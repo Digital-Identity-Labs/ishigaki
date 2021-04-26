@@ -11,29 +11,108 @@ task :default => :refresh
 
 task :refresh => [:build, :test]
 
-desc "Build the Docker image"
-task :build do
+desc "Build the default Docker image"
+task :build => ["build:generic"]
 
-  tmp_file = Tempfile.new("docker")
-  git_hash = `git rev-parse --short HEAD`
+namespace :build do
 
-  rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
+  desc "Build all versions"
+  task :all => ["build:generic", "build:base", "build:plus"]
 
-  sh [
-       "docker build --iidfile #{tmp_file.path}",
-       "--label 'version=#{full_version}'",
-       "--label 'org.opencontainers.image.revision=#{git_hash}'",
-       rebuild_or_not,
-       "./"
-     ].join(" ")
+  desc "Build the Docker image (generic)"
+  task :generic do
 
-  image_id = File.read(tmp_file.path).to_s.strip
+    tmp_file = Tempfile.new("docker")
+    git_hash = `git rev-parse --short HEAD`
 
-  sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
-  sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
-  sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
-  sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:latest"
-  sh "docker tag #{image_id} #{snapshot_name}"
+    rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
+
+    sh [
+         "docker build --iidfile #{tmp_file.path}",
+         "--label 'version=#{full_version}'",
+         "--label 'org.opencontainers.image.revision=#{git_hash}'",
+         rebuild_or_not,
+         "./"
+       ].join(" ")
+
+    image_id = File.read(tmp_file.path).to_s.strip
+
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:latest"
+    sh "docker tag #{image_id} #{snapshot_name}"
+
+  end
+
+  desc "Build the Docker image for use a base image"
+  task :base do
+
+    tmp_file = Tempfile.new("docker")
+    git_hash = `git rev-parse --short HEAD`
+
+    rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
+
+    sh [
+         "docker build --iidfile #{tmp_file.path}",
+         "--build-arg WRITE_MD=0",
+         "--build-arg EDWIN_STARR=1",
+         "--build-arg DELAY_WAR=1",
+         "--build-arg MODULES=''",
+         "--build-arg PLUGINS=''",
+         "--label 'version=#{full_version}'",
+         "--label 'org.opencontainers.image.revision=#{git_hash}'",
+         rebuild_or_not,
+         "./"
+       ].join(" ")
+
+    image_id = File.read(tmp_file.path).to_s.strip
+
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-base"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:latest-base"
+    sh "docker tag #{image_id} #{snapshot_name}-base"
+
+  end
+
+  desc "Build the Docker image (including extra plugins)"
+  task :plus do
+
+    tmp_file = Tempfile.new("docker")
+    git_hash = `git rev-parse --short HEAD`
+
+    rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
+
+    plugin_urls = [
+      "https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/1.0.0/oidc-common-dist-1.0.0.tar.gz",
+      "https://shibboleth.net/downloads/identity-provider/plugins/totp/1.0.0/idp-plugin-totp-dist-1.0.0.tar.gz",
+      "https://shibboleth.net/downloads/identity-provider/plugins/scripting/1.0.0/idp-plugin-nashorn-dist-1.0.0.tar.gz",
+      "https://shibboleth.net/downloads/identity-provider/plugins/oidc-op/3.0.0/idp-plugin-oidc-op-distribution-3.0.0.tar.gz"
+    ].join(" ")
+
+    sh [
+         "docker build --iidfile #{tmp_file.path}",
+         "--build-arg WRITE_MD=0",
+         "--build-arg DELAY_WAR=1",
+         "--build-arg MODULES=''",
+         "--build-arg PLUGINS='#{plugin_urls}'",
+         "--build-arg PLUGIN_MODULES='idp.oidc.OP, idp.authn.TOTP'",
+         "--label 'version=#{full_version}'",
+         "--label 'org.opencontainers.image.revision=#{git_hash}'",
+         rebuild_or_not,
+         "./"
+       ].join(" ")
+
+    image_id = File.read(tmp_file.path).to_s.strip
+
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus"
+    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:latest-plus"
+    sh "docker tag #{image_id} #{snapshot_name}-plus"
+
+  end
 
 end
 
@@ -53,12 +132,14 @@ task :test => [:build] do
   end
 end
 
+desc "Build the image, run, and open a shell"
 task :shell => [:build] do
   sh "docker run -d -p 8080:8080 #{snapshot_name}"
   container_id = `docker ps -q -l`.chomp
   sh "docker exec -it #{container_id} /bin/bash"
 end
 
+desc "Build and run the image and then export configuration files"
 task :export => [:build] do
   sh "docker run -d -p 8080:8080 #{snapshot_name}"
   container_id = `docker ps -q -l`.chomp
@@ -68,36 +149,24 @@ task :export => [:build] do
   sh "docker stop #{container_id}"
 end
 
-desc "Build and publish a Docker image to Github (it's usually better to use github:release)"
-task publish: [:build] do
+desc "Build and publish all Docker images to Github"
+task publish: ["build:all"] do
 
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest"
-
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-plus"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-base"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-base"
 end
 
 task :force_reset do
   ENV["ISHIGAKI_FORCE_REBUILD"] = "yes"
 end
 
-# task :push do
-#
-#   branch = (ENV['TRAVIS_BRANCH'] || `git symbolic-ref --short HEAD`).to_s.downcase.chomp
-#   repo = "digitalidentity/ishigaki"
-#   tag  = (branch == "master" ? "latest" : (branch || "snapshot")).to_s.downcase.chomp
-#   image_name = "#{repo}:#{tag}"
-#
-#   if ["develop", "snapshot"].include?(branch)
-#     puts "Not pushing: Can push to Docker Hub only from master or stable release tags"
-#     exit 1
-#   end
-#
-#   puts "Building, testing and pushing #{image_name} to Docker Hub from #{branch} branch"
-#   sh "docker build -t #{image_name} ."
-#   image_version = `docker image inspect -f '{{.Config.Labels.version}}' #{image_name}`
-#   puts "  version: #{image_version}"
-#   sh "docker push #{repo}"
-#
-# end
