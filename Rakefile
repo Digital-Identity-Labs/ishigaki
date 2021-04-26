@@ -152,18 +152,18 @@ end
 desc "Build and publish all Docker images to Github"
 task publish: ["build:all"] do
 
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-plus"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-base"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-base"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-plus"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
+  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest"
 end
 
 task :force_reset do
