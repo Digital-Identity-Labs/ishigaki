@@ -41,6 +41,8 @@ namespace :build do
     sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
     sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
     sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:latest"
+    sh "docker tag #{image_id} digitalidentity/#{container_name}:#{full_version}"
+    sh "docker tag #{image_id} digitalidentity/#{container_name}:latest"
     sh "docker tag #{image_id} #{snapshot_name}"
 
   end
@@ -164,6 +166,8 @@ task publish: ["build:all"] do
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
   sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest"
+  sh "docker image push digitalidentity/#{container_name}:#{full_version}"
+  sh "docker image push digitalidentity/#{container_name}:latest"
 end
 
 task :force_reset do
