@@ -1,7 +1,7 @@
 FROM bitnami/minideb:latest
 
 LABEL description="A small, elegant foundation image for Shibboleth IdP containers" \
-      maintainer="pete@digitalidentitylabs.com"
+      maintainer="pete@digitalidentitylabs.com" \
       org.opencontainers.image.source="https://github.com/Digital-Identity-Labs/ishigaki"
 
 ARG SRC_DIR=/usr/local/src
