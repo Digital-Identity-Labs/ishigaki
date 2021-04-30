@@ -22,6 +22,8 @@ ARG KPASS=password
 ARG CREDS_MODE=660
 ARG CREDS_GROUP=jetty
 ARG IDP_PROPERTIES=""
+ARG JETTY_UID=5101
+ARG JETTY_GID=$JETTY_UID
 ARG IDP_PROPERTIES_FILE="$SRC_DIR/idp.properties"
 ARG LDAP_PROPERTIES=""
 ARG LDAP_PROPERTIES_FILE="$SRC_DIR/ldap.properties"
@@ -55,7 +57,8 @@ RUN echo "\n## Installing Jetty..." > /dev/stdout && \
     curl -o jetty.tgz $JETTY_URL && \
     echo "${JETTY_CHECKSUM} jetty.tgz" > jetty.tgz.sha1 && sha1sum -c jetty.tgz.sha1 && \
     mkdir -p $JETTY_HOME && tar -zxf jetty.tgz -C $JETTY_HOME --strip-components 1 && \
-    useradd --user-group --shell /bin/false --home-dir $JETTY_BASE jetty && \
+    groupadd --gid $JETTY_GID jetty && \
+    useradd --gid $JETTY_GID --uid $JETTY_UID --shell /bin/false --home-dir $JETTY_BASE jetty && \
     rm -rf $JETTY_HOME/demo-base && \
     chown -R root $JETTY_HOME && \
     mkdir -p /var/opt/jetty/tmp && chown -R jetty /var/opt/jetty/tmp && \
