@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.1.0
+
+Corrects an issue where the filesystem uid and gid may be unpredictable and cause issues when mounting volumes directly.
+To maintain normal security permissions on mounted credentials you can either create a local user with these IDs, or
+use user mapping. 
+
+## Improvements
+- On build UID and GID of the jetty process can be set using build arguments JETTY_UID and JETTY_GID, defaulting to 5101
+
+## Fixes
+
+- jetty group has a fixed uid and gid, determined at build-time, defaulting to 5101 to put it above auto-assigned
+  uids/gids on most servers
+
+### Tests
+- Using tweaked test suite, updated to match ignore the plugins directory in /usr/local/src when checking if it's tidy
+
 ## 2.0.0
 
 Another significant update, with a new IdP and new Dockerfile features. The updated IdP brings plugin and module functionality, and the new Dockerfile is much more useful for building bespoke images.
