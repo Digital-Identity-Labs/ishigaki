@@ -1,15 +1,24 @@
 # Changelog
 
+## 2.2.0
+
+Minor updates to the Shibboleth IdP and Jetty software
+
+### Improvements
+- Uses Shibboleth 4.1.4 (bug fixes and minor changes)
+- Uses Jetty 9.4.43 (more bug fixes)
+- Latest OIDC Plugin versions are downloaded for 'plus' edition
+
 ## 2.1.0
 
 Corrects an issue where the filesystem uid and gid may be unpredictable and cause issues when mounting volumes directly.
 To maintain normal security permissions on mounted credentials you can either create a local user with these IDs, or
 use user mapping. 
 
-## Improvements
+### Improvements
 - On build UID and GID of the jetty process can be set using build arguments JETTY_UID and JETTY_GID, defaulting to 5101
 
-## Fixes
+### Fixes
 
 - jetty group has a fixed uid and gid, determined at build-time, defaulting to 5101 to put it above auto-assigned
   uids/gids on most servers
