@@ -19,7 +19,7 @@ reset_permissions () {
 ## Rebuild IdP .war file, absorbing additional libraries, templates, etc from installation directory.
 rebuild_war () {
      printf "Repackaging IdP .war file based on "
-    (cd $IDP_HOME && ./bin/build.sh)
+    (cd $IDP_HOME && ./bin/build.sh -Didp.target.dir=$IDP_HOME)
 }
 
 echo "Preparations starting..."

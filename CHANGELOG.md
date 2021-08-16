@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.1
+
+### Fixes
+- `prepare_apps.sh rebuild` now explicitly sets installer idp.home using the $IDP_HOME environment variable. It's still deprecated though.
+
 ## 2.2.0
 
 Minor updates to the Shibboleth IdP and Jetty software
