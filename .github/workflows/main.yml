@@ -14,7 +14,7 @@ jobs:
       - name: set up Ruby and Bundler
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.6.6
+          ruby-version: 2.7.4
       - name: Run InSpec tests on local image
         run: bundle && bundle exec rake test
       - name: Set up Docker Buildx
