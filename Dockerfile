@@ -6,10 +6,10 @@ LABEL description="A small, elegant foundation image for Shibboleth IdP containe
 
 ARG SRC_DIR=/usr/local/src
 ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
-ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.40.v20210413/jetty-distribution-9.4.40.v20210413.tar.gz
-ARG JETTY_CHECKSUM=fec94b66d7ec5b132d939f20186eae01db522ff3
-ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest4/shibboleth-identity-provider-4.1.0.tar.gz
-ARG IDP_CHECKSUM=46fe154859f9f1557acd1ae26ee9ac82ded938af52a7dec0b18adbf5bb4510e9
+ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.43.v20210629/jetty-distribution-9.4.43.v20210629.tar.gz
+ARG JETTY_CHECKSUM=a909e2966522c6b7bd5a8632a8086dfd3d0d277d
+ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-4.1.4.tar.gz
+ARG IDP_CHECKSUM=65429f547a7854b30713d86ba5901ca718eae91efb3e618ee11108be59bf8a29
 ARG EDWIN_STARR=0
 ARG DELAY_WAR=0
 
