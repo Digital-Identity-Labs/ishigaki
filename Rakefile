@@ -87,10 +87,10 @@ namespace :build do
     rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
 
     plugin_urls = [
-      "https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/1.0.0/oidc-common-dist-1.0.0.tar.gz",
+      "https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/1.1.0/oidc-common-dist-1.1.0.tar.gz",
       "https://shibboleth.net/downloads/identity-provider/plugins/totp/1.0.0/idp-plugin-totp-dist-1.0.0.tar.gz",
       "https://shibboleth.net/downloads/identity-provider/plugins/scripting/1.0.0/idp-plugin-nashorn-dist-1.0.0.tar.gz",
-      "https://shibboleth.net/downloads/identity-provider/plugins/oidc-op/3.0.0/idp-plugin-oidc-op-distribution-3.0.0.tar.gz"
+      "https://shibboleth.net/downloads/identity-provider/plugins/oidc-op/3.0.1/idp-plugin-oidc-op-distribution-3.0.1.tar.gz"
     ].join(" ")
 
     sh [
