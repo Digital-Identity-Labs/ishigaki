@@ -234,7 +234,7 @@ If you'd like more information about Ishigaki Academic Edition, please [contact 
 ### What does "ishigaki" mean?
 
 Ishigaki are the impressive dry
-stone [foundation walls of Japanese castles](http://www.jcastle.info/resources/view/109-Stone-Walls).
+stone [foundation walls of Japanese castles](http://jcastle.info/view/Stone_walls).
 (Ishigaki is also the name of a beautiful [island and city in Okinawa](https://en.wikipedia.org/wiki/Ishigaki_Island))
 
 ### Thanks
