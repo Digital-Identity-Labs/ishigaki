@@ -8,7 +8,7 @@ ARG SRC_DIR=/usr/local/src
 ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.43.v20210629/jetty-distribution-9.4.43.v20210629.tar.gz
 ARG JETTY_CHECKSUM=a909e2966522c6b7bd5a8632a8086dfd3d0d277d
-ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/latest/shibboleth-identity-provider-4.1.4.tar.gz
+ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/archive/4.1.4/shibboleth-identity-provider-4.1.4.tar.gz
 ARG IDP_CHECKSUM=65429f547a7854b30713d86ba5901ca718eae91efb3e618ee11108be59bf8a29
 ARG EDWIN_STARR=0
 ARG DELAY_WAR=0
@@ -37,7 +37,8 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto \
     ADMIN_HOME=/opt/admin \
     IDP_HOME=/opt/shibboleth-idp \
     CREDS_GROUP=$CREDS_GROUP \
-    WRITE_MD=1
+    WRITE_MD=1 \
+    IDP_BASE_URL=localhost:8080/idp
 
 WORKDIR $SRC_DIR
 
@@ -92,6 +93,7 @@ RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
     mkdir -p $IDP_HOME/metadata/local && chown -R root:root $IDP_HOME/metadata/local && \
     mkdir -p $IDP_HOME/metadata/bilateral && chown -R root:root $IDP_HOME/metadata/bilateral && \
     mkdir -p $IDP_HOME/metadata/federated && chown -R root:$CREDS_GROUP $IDP_HOME/metadata/federated && \
+    mkdir -p $IDP_HOME/metadata/override && chown -R root:$CREDS_GROUP $IDP_HOME/metadata/override && \
     chmod -R g+w $IDP_HOME/metadata/federated && \
     mkdir -p $IDP_HOME/logs && chown -R jetty $IDP_HOME/logs && chmod 0770 $IDP_HOME/logs && \
     mkdir $ADMIN_HOME && \
@@ -113,4 +115,4 @@ WORKDIR    $JETTY_BASE
 
 ENTRYPOINT exec gosu jetty:$CREDS_MODE /usr/bin/java -jar ${JETTY_HOME}/start.jar
 
-HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://127.0.0.1:8080/idp/status || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD curl -f ${IDP_BASE_URL}/status || exit 1
