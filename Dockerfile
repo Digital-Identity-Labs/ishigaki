@@ -1,4 +1,4 @@
-FROM bitnami/minideb:latest
+FROM bitnami/minideb:bullseye
 
 LABEL description="A small, elegant foundation image for Shibboleth IdP containers" \
       maintainer="pete@digitalidentitylabs.com" \
