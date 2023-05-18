@@ -6,10 +6,10 @@ LABEL description="A small, elegant foundation image for Shibboleth IdP containe
 
 ARG SRC_DIR=/usr/local/src
 ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
-ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.43.v20210629/jetty-distribution-9.4.43.v20210629.tar.gz
-ARG JETTY_CHECKSUM=a909e2966522c6b7bd5a8632a8086dfd3d0d277d
-ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/archive/4.1.4/shibboleth-identity-provider-4.1.4.tar.gz
-ARG IDP_CHECKSUM=65429f547a7854b30713d86ba5901ca718eae91efb3e618ee11108be59bf8a29
+ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/10.0.15/jetty-home-10.0.15.tar.gz
+ARG JETTY_CHECKSUM=a43c0bda4322f2c80be574d835f51488f3832a4d
+ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/archive/4.3.1/shibboleth-identity-provider-4.3.1.tar.gz
+ARG IDP_CHECKSUM=04d08d324a5a5f016ca69b96dbab58abbb5b3e0045455cc15cf0d33ffd6742d5
 ARG EDWIN_STARR=0
 ARG DELAY_WAR=0
 
@@ -31,7 +31,7 @@ ARG MODULES="idp.authn.Password,idp.admin.Hello"
 ARG PLUGINS=""
 ARG PLUGIN_MODULES=""
 
-ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto \
+ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto \
     JETTY_HOME=/opt/jetty \
     JETTY_BASE=/opt/jetty-shib \
     ADMIN_HOME=/opt/admin \
@@ -48,7 +48,7 @@ RUN echo "\n## Installing Java..." > /dev/stdout && \
     install_packages gnupg curl unzip procps net-tools gosu ca-certificates && \
     apt-key add corretto.key && \
     cp sources.list /etc/apt/ && \
-    install_packages java-11-amazon-corretto-jdk && \
+    install_packages java-17-amazon-corretto-jdk && \
     rm -rfv $JAVA_HOME/lib/*.zip && \
     apt-get remove --auto-remove --yes --allow-remove-essential gnupg dirmngr unzip && \
     rm -rf /var/lib/apt/lists && \
