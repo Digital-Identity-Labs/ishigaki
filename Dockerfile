@@ -64,6 +64,7 @@ RUN echo "\n## Installing Jetty..." > /dev/stdout && \
     chown -R root $JETTY_HOME && \
     mkdir -p /var/opt/jetty/tmp && chown -R jetty /var/opt/jetty/tmp && \
     mkdir -p $JETTY_BASE/logs && chown -R jetty $JETTY_BASE/logs && chmod 0770 $JETTY_BASE/logs && \
+    java -jar $JETTY_HOME/start.jar --add-module=logging-logback --approve-all-licenses && \
     rm -rf /usr/local/src/*
 
 RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
@@ -115,4 +116,7 @@ WORKDIR    $JETTY_BASE
 
 ENTRYPOINT exec gosu jetty:$CREDS_MODE /usr/bin/java -jar ${JETTY_HOME}/start.jar
 
+
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f ${IDP_BASE_URL}/status || exit 1
+
+# https://build.shibboleth.net/nexus/content/repositories/releases/net/shibboleth/utilities/jetty9/jetty94-dta-ssl/1.0.0/jetty94-dta-ssl-1.0.0.jar
