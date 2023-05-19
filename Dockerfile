@@ -10,6 +10,8 @@ ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/10.0.1
 ARG JETTY_CHECKSUM=a43c0bda4322f2c80be574d835f51488f3832a4d
 ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/archive/4.3.1/shibboleth-identity-provider-4.3.1.tar.gz
 ARG IDP_CHECKSUM=04d08d324a5a5f016ca69b96dbab58abbb5b3e0045455cc15cf0d33ffd6742d5
+ARG DTA_URL=https://build.shibboleth.net/nexus/content/repositories/releases/net/shibboleth/utilities/jetty9/jetty94-dta-ssl/1.0.0/jetty94-dta-ssl-1.0.0.jar
+ARG DTA_CHECKSUM=5e5de66e3517d30ff19ef66cf7a4aa5443b861d83e36a75e85845b007a03afbf
 ARG EDWIN_STARR=0
 ARG DELAY_WAR=0
 
@@ -62,9 +64,12 @@ RUN echo "\n## Installing Jetty..." > /dev/stdout && \
     useradd --gid $JETTY_GID --uid $JETTY_UID --shell /bin/false --home-dir $JETTY_BASE jetty && \
     rm -rf $JETTY_HOME/demo-base && \
     chown -R root $JETTY_HOME && \
-    mkdir -p /var/opt/jetty/tmp && chown -R jetty /var/opt/jetty/tmp && \
+    mkdir -p $JETTY_BASE/tmp && chown -R jetty $JETTY_BASE/tmp && chmod 0770 $JETTY_BASE/tmp && \
     mkdir -p $JETTY_BASE/logs && chown -R jetty $JETTY_BASE/logs && chmod 0770 $JETTY_BASE/logs && \
-    java -jar $JETTY_HOME/start.jar --add-module=logging-logback --approve-all-licenses && \
+    curl -L -o jetty94-dta-ssl-1.0.0.jar $DTA_URL && \
+    echo "${DTA_CHECKSUM} jetty94-dta-ssl-1.0.0.jar" > jetty94-dta-ssl-1.0.0.jar.sha256 && sha256sum -c jetty94-dta-ssl-1.0.0.jar.sha256 && \
+    mkdir -p $JETTY_BASE/lib/ext && \
+    cp jetty94-dta-ssl-1.0.0.jar $JETTY_BASE/lib/ext/ && \
     rm -rf /usr/local/src/*
 
 RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
@@ -109,7 +114,10 @@ RUN echo "\n## Installing plugins and extra modules..." > /dev/stdout && \
     if [[ ! -z "${PLUGIN_MODULES}" ]] ; then $IDP_HOME/bin/module.sh -i $MODULES ; $IDP_HOME/bin/module.sh -e $MODULES ; fi && \
     if [ "${EDWIN_STARR}" -gt "0" ] ; then rm -fv $IDP_HOME/war/* ; fi
 
+
 COPY optfs /opt
+
+#RUN (cd $JETTY_BASE && java -jar $JETTY_HOME/start.jar --add-module=logging-logback --approve-all-licenses)
 
 EXPOSE     8080
 WORKDIR    $JETTY_BASE
@@ -119,4 +127,4 @@ ENTRYPOINT exec gosu jetty:$CREDS_MODE /usr/bin/java -jar ${JETTY_HOME}/start.ja
 
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f ${IDP_BASE_URL}/status || exit 1
 
-# https://build.shibboleth.net/nexus/content/repositories/releases/net/shibboleth/utilities/jetty9/jetty94-dta-ssl/1.0.0/jetty94-dta-ssl-1.0.0.jar
+#
