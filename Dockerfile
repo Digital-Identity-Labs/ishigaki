@@ -122,7 +122,7 @@ COPY optfs /opt
 EXPOSE     8080
 WORKDIR    $JETTY_BASE
 
-ENTRYPOINT exec gosu jetty:$CREDS_MODE /usr/bin/java -jar ${JETTY_HOME}/start.jar
+ENTRYPOINT exec gosu jetty:$CREDS_MODE $(/usr/bin/java -jar ${JETTY_HOME}/start.jar --dry-run)
 
 
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f ${IDP_BASE_URL}/status || exit 1
