@@ -7,8 +7,8 @@ Shibboleth modification : do not exec
 logging
 
 [depends]
-slf4j-logback
-logback-impl
+#slf4j-logback
+#logback-impl
 
 [provides]
 logging
