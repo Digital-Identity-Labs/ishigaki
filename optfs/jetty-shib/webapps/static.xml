@@ -7,9 +7,7 @@
   <Set name="contextPath">/</Set>
   <Set name="handler">
     <New class="org.eclipse.jetty.server.handler.ResourceHandler">
-      <Set name="resourceBase">
-        <Property name="jetty.base"/>/<Property name="jetty.static.data.path" default="../static"/>
-      </Set>
+      <Set name="resourceBase">/opt/jetty-shib/static</Set>
       <Set name="directoriesListed">false</Set>
     </New>
   </Set>
