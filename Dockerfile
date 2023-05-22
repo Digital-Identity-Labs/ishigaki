@@ -70,6 +70,7 @@ RUN echo "\n## Installing Jetty..." > /dev/stdout && \
     echo "${DTA_CHECKSUM} jetty94-dta-ssl-1.0.0.jar" > jetty94-dta-ssl-1.0.0.jar.sha256 && sha256sum -c jetty94-dta-ssl-1.0.0.jar.sha256 && \
     mkdir -p $JETTY_BASE/lib/ext && \
     cp jetty94-dta-ssl-1.0.0.jar $JETTY_BASE/lib/ext/ && \
+    (cd $JETTY_BASE && java -jar $JETTY_HOME/start.jar --add-module=logging-logback,requestlog --approve-all-licenses) && \
     rm -rf /usr/local/src/*
 
 RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
@@ -116,8 +117,6 @@ RUN echo "\n## Installing plugins and extra modules..." > /dev/stdout && \
 
 
 COPY optfs /opt
-
-RUN (cd $JETTY_BASE && java -jar $JETTY_HOME/start.jar --add-module=logging-logback,requestlog --approve-all-licenses)
 
 EXPOSE     8080
 WORKDIR    $JETTY_BASE
