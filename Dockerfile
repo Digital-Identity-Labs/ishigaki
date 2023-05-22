@@ -117,7 +117,7 @@ RUN echo "\n## Installing plugins and extra modules..." > /dev/stdout && \
 
 COPY optfs /opt
 
-#RUN (cd $JETTY_BASE && java -jar $JETTY_HOME/start.jar --add-module=logging-logback --approve-all-licenses)
+RUN (cd $JETTY_BASE && java -jar $JETTY_HOME/start.jar --add-module=logging-logback,requestlog --approve-all-licenses)
 
 EXPOSE     8080
 WORKDIR    $JETTY_BASE

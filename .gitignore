@@ -20,3 +20,4 @@ scratch/*
 /Gemfile.lock
 /exported_defaults
 /exported_optfs
+/wjs
