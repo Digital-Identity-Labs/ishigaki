@@ -1,5 +1,27 @@
 # Changelog
 
+## 3.0.0 - 2023-05-23
+
+A major update with potentially breaking changes - Linux, Shibboleth IdP, Java and Jetty are all new.
+
+## Improvements
+- Shibboleth IdP updated to latest stable release: v4.3.1
+- Jetty 10 and simplified Jetty configuration: You will need to rewrite any existing customisation of Jetty configuration 
+- Java updated to Corretto JDK 17
+- Linux updated to Debian 11 (Bullseye)
+- Updated plugin trust keys
+- New `PLUGIN_IDS` build argument to add official modules by ID, rather than file or URL
+- `jetty94-dta-ssl-1.0.0.jar` is included by default so with additional configuration both TLS and backchannel can be supported
+- Jetty request logging to STDOUT is active 
+- LogBack .jars are included, and LogBack enabled
+- Jetty no longer forks on startup, saving about 120MB of RAM
+- Jetty's ugly default favicon is replaced by a nicer Shibboleth logo (but please replace that with your own!)
+- Static web files are now at `/opt/jetty-shib/static`
+
+## Fixes
+- Build-time installation of plugins has been fixed
+- Jetty `tmp/` has been moved to `/opt/jetty-shib/tmp` from JETTY_HOME
+
 ## 2.2.1
 
 ### Fixes

@@ -15,7 +15,7 @@ by [Digital Identity Ltd.](http://digitalidentity.ltd.uk/)
 Ishigaki is intended to be a solid foundation for other images but can also be used directly by mounting volumes for
 configuration directories.
 
-The latest Ishigaki is based around Shibboleth IdP v4.1.0 and has support for installing plugins and managing modules.
+The latest Ishigaki is based around Shibboleth IdP v4.3.1 and has support for installing plugins and managing modules.
 
 This image is *not* a ready-to-use, stand-alone IdP service - it's meant to be configured and then used in conjunction
 with other services to handle TLS, databases, LDAP, and so on. It's especially well suited to use with Docker Compose or
@@ -38,7 +38,7 @@ a non-root process, logging to STDOUT by default and a healthcheck.
   Shibboleth IdP.
 * It's got no warranty or support (but see Ishigaki Academic Edition details below)
 * It does not use the official Oracle JDK - it uses Amazon's own JDK
-* It requires other supporting services to provide TLS and user information
+* It requires other supporting services to provide TLS and user information (or special configuration)
 * Docker should not be used in production unless you have a reliable process for regularly updating images and replacing
   containers
 
@@ -107,8 +107,8 @@ LABEL description="An example IdP image based on Ishigaki" \
       version="0.0.1" \
       maintainer="example@example.com"
 
-ARG PLUGINS="https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/1.0.0/oidc-common-dist-1.0.0.tar.gz \
-             https://shibboleth.net/downloads/identity-provider/plugins/oidc-op/3.0.0/idp-plugin-oidc-op-distribution-3.0.0.tar.gz"
+ARG PLUGINS="https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/2.2.0/oidc-common-dist-2.2.0.tar.gz \
+             https://shibboleth.net/downloads/identity-provider/plugins/oidc-op/3.4.0/idp-plugin-oidc-op-distribution-3.4.0.tar.gz"
 ARG MODULES="idp.oidc.OP"
 
 
@@ -202,7 +202,8 @@ The defaults for these settings can be changed by using `--build-arg THE_ARG="ne
   *  IDP_PROPERTIES Java properties (as a string) that will be merged with default IdP properties
   *  LDAP_PROPERTIES Java properties (as a string) that will be merged with default LDAP properties
   *  MODULES A comma-seperated list of module IDs to enable from the main Shibboleth package
-  *  PLUGINS A whitespace-seperated list of plugin file paths or URLs
+  *  PLUGINS A whitespace-seperated list of plugin file paths or URLs to be installed
+  *  PLUGIN_IDS A whitespace-seperated list of official plugin IDs to be installed
   *  PLUGIN_MODULES A comma-seperated list of module IDs to install after plugins
   *  WRITE_MD Set to "0" to have stricter write permissions in the metadata directory
 
@@ -257,6 +258,6 @@ than use Github.
 
 ### License
 
-Copyright (c) 2017,2021 Digital Identity Ltd, UK
+Copyright (c) 2017,2023 Digital Identity Ltd, UK
 
 Licensed under the MIT License
