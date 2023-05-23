@@ -24,7 +24,7 @@ a non-root process, logging to STDOUT by default and a healthcheck.
 
 ## Why use this?
 
-* **Modern**: uses the latest Shibboleth IdP, Jetty and Debian OS.
+* **Modern**: uses the latest Shibboleth IdP, Jetty and Debian OS, and build for both AMD64 and ARM64 architectures
 * **Smaller**: based on Minideb and built carefully, Ishigaki is only around 400MB and the download is under 280MB
 * **Secure**: updated regularly, nothing runs as root, and directory permissions are managed
 * **Tested**: Ishigaki is built and tested automatically
