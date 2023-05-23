@@ -18,9 +18,10 @@ A major update with potentially breaking changes - Linux, Shibboleth IdP, Java a
 - Jetty's ugly default favicon is replaced by a nicer Shibboleth logo (but please replace that with your own!)
 - Static web files are now at `/opt/jetty-shib/static`
 - Tests are now using [Cinc Auditor](https://cinc.sh/start/auditor/) and always update before running
+- Plus edition adds latest version of plugins automatically
 
 ## Fixes
-- Build-time installation of plugins has been fixed
+- Build-time installation of plugins has been fixed (twice)
 - Jetty `tmp/` has been moved to `/opt/jetty-shib/tmp` from JETTY_HOME
 
 ## 2.2.1
