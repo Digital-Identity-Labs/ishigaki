@@ -31,6 +31,7 @@ namespace :build do
          "docker build --iidfile #{tmp_file.path}",
          "--label 'version=#{full_version}'",
          "--label 'org.opencontainers.image.revision=#{git_hash}'",
+         "--progress=plain",
          rebuild_or_not,
          "./"
        ].join(" ")
@@ -64,6 +65,7 @@ namespace :build do
          "--build-arg PLUGINS=''",
          "--label 'version=#{full_version}'",
          "--label 'org.opencontainers.image.revision=#{git_hash}'",
+         "--progress=plain",
          rebuild_or_not,
          "./"
        ].join(" ")
@@ -86,11 +88,15 @@ namespace :build do
 
     rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
 
-    plugin_urls = [
-      "https://shibboleth.net/downloads/identity-provider/plugins/oidc-common/1.1.0/oidc-common-dist-1.1.0.tar.gz",
-      "https://shibboleth.net/downloads/identity-provider/plugins/totp/1.0.0/idp-plugin-totp-dist-1.0.0.tar.gz",
-      "https://shibboleth.net/downloads/identity-provider/plugins/scripting/1.0.0/idp-plugin-nashorn-dist-1.0.0.tar.gz",
-      "https://shibboleth.net/downloads/identity-provider/plugins/oidc-op/3.0.1/idp-plugin-oidc-op-distribution-3.0.1.tar.gz"
+    plugin_ids = [
+      "net.shibboleth.idp.plugin.metadatagen",
+      "net.shibboleth.idp.plugin.authn.totp",
+      "net.shibboleth.oidc.common",
+      "net.shibboleth.idp.plugin.oidc.config",
+      "net.shibboleth.idp.plugin.oidc.op",
+      "net.shibboleth.idp.plugin.oidc.rp",
+      "net.shibboleth.idp.plugin.authn.duo.sdk",
+      "net.shibboleth.idp.plugin.nashorn"
     ].join(" ")
 
     sh [
@@ -98,10 +104,11 @@ namespace :build do
          "--build-arg WRITE_MD=0",
          "--build-arg DELAY_WAR=1",
          "--build-arg MODULES=''",
-         "--build-arg PLUGINS='#{plugin_urls}'",
-         "--build-arg PLUGIN_MODULES='idp.oidc.OP, idp.authn.TOTP'",
+         "--build-arg PLUGIN_IDS='#{plugin_ids}'",
+         "--build-arg PLUGIN_MODULES=''",
          "--label 'version=#{full_version}'",
          "--label 'org.opencontainers.image.revision=#{git_hash}'",
+         "--progress=plain",
          rebuild_or_not,
          "./"
        ].join(" ")
