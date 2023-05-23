@@ -17,6 +17,7 @@ A major update with potentially breaking changes - Linux, Shibboleth IdP, Java a
 - Jetty no longer forks on startup, saving about 120MB of RAM
 - Jetty's ugly default favicon is replaced by a nicer Shibboleth logo (but please replace that with your own!)
 - Static web files are now at `/opt/jetty-shib/static`
+- Tests are now using [Cinc Auditor](https://cinc.sh/start/auditor/) and always update before running
 
 ## Fixes
 - Build-time installation of plugins has been fixed

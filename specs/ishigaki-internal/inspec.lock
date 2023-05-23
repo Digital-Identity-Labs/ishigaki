@@ -4,6 +4,6 @@ depends:
 - name: ishigaki
   resolved_source:
     git: https://github.com/Digital-Identity-Labs/ishigaki-spec
-    ref: af6ace59b17a751d6f09eb31d7dfe92c414f64a1
+    ref: e042921eae27bd2dc2fd09814a7b50cdfc43e478
   version_constraints:
-  - 1.1.1
+  - 2.0.0

@@ -128,7 +128,8 @@ task :test => [:build] do
     container_id = `docker ps -q -l`
     sleep ENV['CI'] ? 20 : 10
     colour = ENV['CI'] ? "--no-color" : "--color"
-    sh "bundle exec inspec exec specs/ishigaki-internal/ #{colour} --chef-license accept -t docker://#{container_id} "
+    sh "bundle exec cinc-auditor vendor specs/ishigaki-internal --overwrite"
+    sh "bundle exec cinc-auditor exec specs/ishigaki-internal/ #{colour} -t docker://#{container_id} "
   ensure
     sh "docker stop #{container_id}" if container_id
   end
@@ -173,4 +174,3 @@ end
 task :force_reset do
   ENV["ISHIGAKI_FORCE_REBUILD"] = "yes"
 end
-

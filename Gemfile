@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 source "https://rubygems.org"
 
-gem "inspec", "~>4.33"
-gem "inspec-bin"
 gem "rake"
 
-
+source "https://packagecloud.io/cinc-project/stable" do
+  gem "cinc-auditor-bin"
+end
