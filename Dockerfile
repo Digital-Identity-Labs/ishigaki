@@ -31,6 +31,7 @@ ARG LDAP_PROPERTIES=""
 ARG LDAP_PROPERTIES_FILE="$SRC_DIR/ldap.properties"
 ARG MODULES="idp.authn.Password,idp.admin.Hello"
 ARG PLUGINS=""
+ARG PLUGIN_IDS=""
 ARG PLUGIN_MODULES=""
 
 ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto \
@@ -46,7 +47,8 @@ WORKDIR $SRC_DIR
 
 COPY aptfs .
 
-RUN echo "\n## Installing Java..." > /dev/stdout && \
+RUN echo "\n## Installing Java and other OS packages..." > /dev/stdout && \
+    apt-get update && apt-get upgrade && \
     install_packages gnupg curl unzip procps net-tools gosu ca-certificates && \
     apt-key add corretto.key && \
     cp sources.list /etc/apt/ && \
@@ -56,7 +58,7 @@ RUN echo "\n## Installing Java..." > /dev/stdout && \
     rm -rf /var/lib/apt/lists && \
     rm -rf /usr/local/src/*
 
-RUN echo "\n## Installing Jetty..." > /dev/stdout && \
+RUN echo "\n## Installing Jetty from source..." > /dev/stdout && \
     curl -o jetty.tgz $JETTY_URL && \
     echo "${JETTY_CHECKSUM} jetty.tgz" > jetty.tgz.sha1 && sha1sum -c jetty.tgz.sha1 && \
     mkdir -p $JETTY_HOME && tar -zxf jetty.tgz -C $JETTY_HOME --strip-components 1 && \
@@ -73,7 +75,7 @@ RUN echo "\n## Installing Jetty..." > /dev/stdout && \
     (cd $JETTY_BASE && java -jar $JETTY_HOME/start.jar --add-module=logging-logback,requestlog --approve-all-licenses) && \
     rm -rf /usr/local/src/*
 
-RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
+RUN echo "\n## Installing Shibboleth IdP from source..." > /dev/stdout && \
     curl -o idp.tgz $IDP_URL && \
     echo "${IDP_CHECKSUM} idp.tgz" > idp.tgz.sha256 && sha256sum -c idp.tgz.sha256 && \
     mkdir -p idp_src && tar -zxf idp.tgz -C idp_src --strip-components 1 && \
@@ -109,12 +111,12 @@ RUN echo "\n## Installing Shibboleth IdP..." > /dev/stdout && \
 
 COPY plugins $SRC_DIR/plugins
 
-RUN echo "\n## Installing plugins and extra modules..." > /dev/stdout && \
+RUN echo "\n## Installing Shibboleth IdP plugins and extra modules..." > /dev/stdout && \
     cp -r $SRC_DIR/plugins/truststores/* $IDP_HOME/credentials && \
     for plugin in $PLUGINS; do $IDP_HOME/bin/plugin.sh -i $plugin ; done && \
-    if [[ ! -z "${PLUGIN_MODULES}" ]] ; then $IDP_HOME/bin/module.sh -i $MODULES ; $IDP_HOME/bin/module.sh -e $MODULES ; fi && \
-    if [ "${EDWIN_STARR}" -gt "0" ] ; then rm -fv $IDP_HOME/war/* ; fi
-
+    for plugin in $PLUGIN_IDS; do $IDP_HOME/bin/plugin.sh -I $plugin ; done && \
+    /bin/bash -c 'if [[ ! -z "${PLUGIN_MODULES}" ]] ; then $IDP_HOME/bin/module.sh -i $MODULES ; $IDP_HOME/bin/module.sh -e $MODULES ; fi' && \
+    /bin/bash -c 'if [ "${EDWIN_STARR}" -gt "0" ] ; then rm -fv $IDP_HOME/war/* ; fi'
 
 COPY optfs /opt
 
@@ -123,7 +125,4 @@ WORKDIR    $JETTY_BASE
 
 ENTRYPOINT exec gosu jetty:$CREDS_MODE $(/usr/bin/java -jar ${JETTY_HOME}/start.jar --dry-run)
 
-
 HEALTHCHECK --interval=30s --timeout=3s CMD curl -f ${IDP_BASE_URL}/status || exit 1
-
-#
