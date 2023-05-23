@@ -29,7 +29,7 @@ a non-root process, logging to STDOUT by default and a healthcheck.
 * **Secure**: updated regularly, nothing runs as root, and directory permissions are managed
 * **Tested**: Ishigaki is built and tested automatically
 * **Maintained**: we use this image ourselves
-* **Compliant**: follows Docker best practices
+* **Compliant**: follows Docker best practices, responds to signals correctly, logs to STDOUT
 * **Convenient**: We include build scripts for making your own images
 
 ## Any reasons not to use this?
@@ -62,7 +62,7 @@ Three versions are available:
 
 * `docker pull digitalidentity/ishigaki:latest` to get the latest default version from DockerHub
 * `docker pull ghcr.io/digital-identity-labs/ishigaki:latest-plus"` to get the latest plus version from Github
-* `docker pull ghcr.io/digital-identity-labs/ishigaki:2.0.0-base"` to get a specific base version from Github
+* `docker pull ghcr.io/digital-identity-labs/ishigaki:3.0.0-base"` to get a specific base version from Github
 
 ### Configuring the IdP
 
