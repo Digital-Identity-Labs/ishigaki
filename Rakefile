@@ -27,24 +27,41 @@ namespace :build do
 
     rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
 
+    if ENV["PUBLISH_MP_MODE"].to_s.downcase == "yes"
+      command = "docker buildx build"
+      platforms = "--platform linux/amd64,linux/arm64"
+      push_or_not = "--push"
+    else
+      command = "docker build"
+      platforms = ""
+      push_or_not = " "
+    end
+
+    tags = [
+      "ghcr.io/digital-identity-labs/#{container_name}:#{full_version}",
+      "ghcr.io/digital-identity-labs/#{container_name}:#{major_version}",
+      "ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}",
+      "ghcr.io/digital-identity-labs/#{container_name}:latest",
+      "digitalidentity/#{container_name}:#{full_version}",
+      "digitalidentity/#{container_name}:latest",
+      "#{snapshot_name}"
+    ].map { |t| " -t #{t}" }.join(" ")
+
     sh [
-         "docker build --iidfile #{tmp_file.path}",
+         command,
+         "--iidfile #{tmp_file.path}",
+         platforms,
          "--label 'version=#{full_version}'",
          "--label 'org.opencontainers.image.revision=#{git_hash}'",
          "--progress=plain",
+         tags,
          rebuild_or_not,
+         push_or_not,
          "./"
        ].join(" ")
 
     image_id = File.read(tmp_file.path).to_s.strip
-
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:latest"
-    sh "docker tag #{image_id} digitalidentity/#{container_name}:#{full_version}"
-    sh "docker tag #{image_id} digitalidentity/#{container_name}:latest"
-    sh "docker tag #{image_id} #{snapshot_name}"
+    puts image_id
 
   end
 
@@ -56,8 +73,28 @@ namespace :build do
 
     rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
 
+    if ENV["PUBLISH_MP_MODE"].to_s.downcase == "yes"
+      command = "docker buildx build"
+      platforms = "--platform linux/amd64,linux/arm64"
+      push_or_not = "--push"
+    else
+      command = "docker build"
+      platforms = ""
+      push_or_not = " "
+    end
+
+    tags = [
+      "ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-base",
+      "ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base",
+      "ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base",
+      "ghcr.io/digital-identity-labs/#{container_name}:latest-base",
+      "#{snapshot_name}-base"
+    ].map { |t| " -t #{t}" }.join(" ")
+
     sh [
-         "docker build --iidfile #{tmp_file.path}",
+         command,
+         "--iidfile #{tmp_file.path}",
+         platforms,
          "--build-arg WRITE_MD=0",
          "--build-arg EDWIN_STARR=1",
          "--build-arg DELAY_WAR=1",
@@ -66,17 +103,14 @@ namespace :build do
          "--label 'version=#{full_version}'",
          "--label 'org.opencontainers.image.revision=#{git_hash}'",
          "--progress=plain",
+         tags,
          rebuild_or_not,
+         push_or_not,
          "./"
        ].join(" ")
 
     image_id = File.read(tmp_file.path).to_s.strip
-
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-base"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:latest-base"
-    sh "docker tag #{image_id} #{snapshot_name}-base"
+    puts image_id
 
   end
 
@@ -87,6 +121,16 @@ namespace :build do
     git_hash = `git rev-parse --short HEAD`
 
     rebuild_or_not = ENV["ISHIGAKI_FORCE_REBUILD"] ? "--pull --force-rm" : ""
+
+    if ENV["PUBLISH_MP_MODE"].to_s.downcase == "yes"
+      command = "docker buildx build"
+      platforms = "--platform linux/amd64,linux/arm64"
+      push_or_not = "--push"
+    else
+      command = "docker build"
+      platforms = ""
+      push_or_not = " "
+    end
 
     plugin_ids = [
       "net.shibboleth.idp.plugin.metadatagen",
@@ -99,8 +143,18 @@ namespace :build do
       "net.shibboleth.idp.plugin.nashorn"
     ].join(" ")
 
+    tags = [
+      "ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus",
+      "ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus",
+      "ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus",
+      "ghcr.io/digital-identity-labs/#{container_name}:latest-plus",
+      "#{snapshot_name}-plus"
+    ].map { |t| " -t #{t}" }.join(" ")
+
     sh [
-         "docker build --iidfile #{tmp_file.path}",
+         command,
+         "--iidfile #{tmp_file.path}",
+         platforms,
          "--build-arg WRITE_MD=0",
          "--build-arg DELAY_WAR=1",
          "--build-arg MODULES=''",
@@ -109,17 +163,14 @@ namespace :build do
          "--label 'version=#{full_version}'",
          "--label 'org.opencontainers.image.revision=#{git_hash}'",
          "--progress=plain",
+         tags,
          rebuild_or_not,
+         push_or_not,
          "./"
        ].join(" ")
 
     image_id = File.read(tmp_file.path).to_s.strip
-
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus"
-    sh "docker tag #{image_id} ghcr.io/digital-identity-labs/#{container_name}:latest-plus"
-    sh "docker tag #{image_id} #{snapshot_name}-plus"
+    puts image_id
 
   end
 
@@ -160,24 +211,28 @@ task :export => [:build] do
 end
 
 desc "Build and publish all Docker images to Github"
-task publish: ["build:all"] do
+task publish: [:publish_mp_mode, "build:all"] do
 
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-base"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-base"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-plus"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
-  sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest"
-  sh "docker image push digitalidentity/#{container_name}:#{full_version}"
-  sh "docker image push digitalidentity/#{container_name}:latest"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-base"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-base"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-plus"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
+  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest"
+  # sh "docker image push digitalidentity/#{container_name}:#{full_version}"
+  # sh "docker image push digitalidentity/#{container_name}:latest"
 end
 
 task :force_reset do
   ENV["ISHIGAKI_FORCE_REBUILD"] = "yes"
+end
+
+task :publish_mp_mode do
+  ENV["PUBLISH_MP_MODE"] = "yes"
 end
