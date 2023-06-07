@@ -238,6 +238,10 @@ Ishigaki are the impressive dry
 stone [foundation walls of Japanese castles](http://jcastle.info/view/Stone_walls).
 (Ishigaki is also the name of a beautiful [island and city in Okinawa](https://en.wikipedia.org/wiki/Ishigaki_Island))
 
+## Alternatives
+
+* [TIER's Shib IdP](https://github.internet2.edu/docker/shib-idp/) - Tomcat-based and actively maintained, but no ARM version.
+
 ### Thanks
 
 * Ian Young's script to test Java crypto features has been included with his kind permission
