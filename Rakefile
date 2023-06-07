@@ -42,9 +42,8 @@ namespace :build do
       "ghcr.io/digital-identity-labs/#{container_name}:#{major_version}",
       "ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}",
       "ghcr.io/digital-identity-labs/#{container_name}:latest",
-      "digitalidentity/#{container_name}:#{full_version}",
-      "digitalidentity/#{container_name}:latest",
-      "#{snapshot_name}"
+        "digitalidentity/#{container_name}:#{full_version}",
+        "digitalidentity/#{container_name}:latest",
     ].map { |t| " -t #{t}" }.join(" ")
 
     sh [
@@ -88,7 +87,6 @@ namespace :build do
       "ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base",
       "ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base",
       "ghcr.io/digital-identity-labs/#{container_name}:latest-base",
-      "#{snapshot_name}-base"
     ].map { |t| " -t #{t}" }.join(" ")
 
     sh [
@@ -148,7 +146,6 @@ namespace :build do
       "ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus",
       "ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus",
       "ghcr.io/digital-identity-labs/#{container_name}:latest-plus",
-      "#{snapshot_name}-plus"
     ].map { |t| " -t #{t}" }.join(" ")
 
     sh [
@@ -212,21 +209,7 @@ end
 
 desc "Build and publish all Docker images to Github"
 task publish: [:publish_mp_mode, "build:all"] do
-
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-base"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-base"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-base"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-base"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}-plus"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}-plus"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}-plus"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest-plus"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{full_version}"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{major_version}"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:#{minor_version}"
-  # sh "docker image push ghcr.io/digital-identity-labs/#{container_name}:latest"
-  # sh "docker image push digitalidentity/#{container_name}:#{full_version}"
-  # sh "docker image push digitalidentity/#{container_name}:latest"
+  puts "Complete!"
 end
 
 task :force_reset do
