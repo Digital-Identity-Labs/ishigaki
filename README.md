@@ -240,7 +240,8 @@ stone [foundation walls of Japanese castles](http://jcastle.info/view/Stone_wall
 
 ## Alternatives
 
-* [TIER's Shib IdP](https://github.internet2.edu/docker/shib-idp/) - Tomcat-based and actively maintained, but no ARM version.
+* [TIER's Shib IdP](https://github.internet2.edu/docker/shib-idp/) - Tomcat-based and actively maintained. Two different images
+  on DockerHub.
 
 ### Thanks
 
