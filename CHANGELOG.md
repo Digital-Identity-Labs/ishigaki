@@ -1,5 +1,31 @@
 # Changelog
 
+## 4.0.0 - 2023-05-23
+
+Another major update: Shibboleth IdP v5.0.0 and Jetty v11.0.17 on Debian 12 (Bookworm)
+
+## Improvements
+- Shibboleth IdP is the latest stable release, v5.0.0, a major change. You will probably need to update your configuration.
+  Please see [the official documentation for this release](https://shibboleth.atlassian.net/wiki/spaces/IDP5/pages/3199500367/ReleaseNotes#5.0.0-(Sep-13th%2C-2023))
+- [Jetty 11.0.17](https://www.eclipse.org/lists/jetty-announce/msg00149.html) - a major version change, but relatively 
+  little has changed for Jetty configuration with this update.
+- The Linux OS is now based on Debian 12 (Bookworm) - this should have little practical effect
+- The `DISABLE_MODULES` ARG will, predictably, disable the named modules if they have been enabled (only during build).
+- The healthcheck uses a browser agent string of "Ishigaki Healthcheck" so it can be filtered from logs
+- Default credentials permissions are now 0640
+- `INSTALL_PROPERTIES` ARG is used to provide functionality that the old installer used to support but the new one does
+  not - it can be redefined if you need to specify additional Java options for the installer at build time but you probably
+  won't need to.
+- The state of modules and plugins will be printed at the end of builds - show with `docker build ./ --progress plain`
+- The `prepare_apps.sh` script has been removed. You may need to fix permissions in images based on Ishigaki but from
+  now on you should fix them directly and explicitly in your Dockerfile using RUN and shell commands. 
+
+## Fixes
+- `apt-key` is now deprecated so the GPG key for Corretto Java packages is installed directly as a file
+- Build messages in the Dockerfile are never shown by modern Docker so they've all been removed and replaced by comments
+- Jetty contains fixes for HTTP2 DDOS issues
+
+
 ## 3.0.0 - 2023-05-23
 
 A major update with potentially breaking changes - Linux, Shibboleth IdP, Java and Jetty are all new.
