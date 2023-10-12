@@ -8,8 +8,7 @@ ARG SRC_DIR=/usr/local/src
 ARG APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 ARG JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/11.0.17/jetty-home-11.0.17.tar.gz
 ARG JETTY_CHECKSUM=a3c6151880119ea623a91ac797fa6dd92d7bbae9
-#ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/5.0.0/shibboleth-identity-provider-5.0.0.tar.gz
-ARG IDP_URL=https://f002.backblazeb2.com/file/mimoto-mirror/shibboleth-identity-provider-5.0.0.tar.gz
+ARG IDP_URL=https://shibboleth.net/downloads/identity-provider/5.0.0/shibboleth-identity-provider-5.0.0.tar.gz
 ARG IDP_CHECKSUM=7e782a0e82d01d724b4889700d4db603b17d9a912b21f7c0fcedf18527f9efff
 ARG DTA_URL=https://build.shibboleth.net/nexus/content/repositories/releases/net/shibboleth/utilities/jetty9/jetty94-dta-ssl/1.0.0/jetty94-dta-ssl-1.0.0.jar
 ARG DTA_CHECKSUM=5e5de66e3517d30ff19ef66cf7a4aa5443b861d83e36a75e85845b007a03afbf
@@ -82,8 +81,8 @@ RUN curl -o jetty.tgz $JETTY_URL && \
 
 ## Install the Shibboleth IdP software from source
 RUN curl -o idp.tgz $IDP_URL && \
-    echo "${IDP_CHECKSUM} idp.tgz" > idp.tgz.sha256 && sha256sum -c idp.tgz.sha256
-RUN mkdir -p idp_src && tar -zxf idp.tgz -C idp_src --strip-components 1 && \
+    echo "${IDP_CHECKSUM} idp.tgz" > idp.tgz.sha256 && sha256sum -c idp.tgz.sha256 && \
+    mkdir -p idp_src && tar -zxf idp.tgz -C idp_src --strip-components 1 && \
     rm -rf idp_src/bin/*.bat && \
     echo $IDP_PROPERTIES  > $IDP_PROPERTIES_FILE && \
     echo $LDAP_PROPERTIES > $LDAP_PROPERTIES_FILE && \
