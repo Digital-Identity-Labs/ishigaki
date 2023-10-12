@@ -44,6 +44,7 @@ namespace :build do
       "ghcr.io/digital-identity-labs/#{container_name}:latest",
         "digitalidentity/#{container_name}:#{full_version}",
         "digitalidentity/#{container_name}:latest",
+        "#{container_name}:snapshot",
     ].map { |t| " -t #{t}" }.join(" ")
 
     sh [
@@ -183,8 +184,7 @@ task :test => [:build] do
     container_id = `docker ps -q -l`
     sleep ENV['CI'] ? 20 : 10
     colour = ENV['CI'] ? "--no-color" : "--color"
-    sh "bundle exec cinc-auditor vendor specs/ishigaki-internal --overwrite"
-    sh "bundle exec cinc-auditor exec specs/ishigaki-internal/ #{colour} -t docker://#{container_id} "
+    sh "bundle exec cinc-auditor exec specs/ #{colour} -t docker://#{container_id} "
   ensure
     sh "docker stop #{container_id}" if container_id
   end
