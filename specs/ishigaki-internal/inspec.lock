@@ -1,9 +1,0 @@
----
-lockfile_version: 1
-depends:
-- name: ishigaki
-  resolved_source:
-    git: https://github.com/Digital-Identity-Labs/ishigaki-spec
-    ref: e042921eae27bd2dc2fd09814a7b50cdfc43e478
-  version_constraints:
-  - 2.0.0
