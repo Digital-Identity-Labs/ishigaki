@@ -1,8 +1,8 @@
 # Changelog
 
-## 4.0.0 - 2023-05-23
+## 4.0.0 - 2023-10-13
 
-Another major update: Shibboleth IdP v5.0.0 and Jetty v11.0.17 on Debian 12 (Bookworm)
+Another major update: Shibboleth IdP v5.0.0 and Jetty v11.0.17, on Debian 12 (Bookworm)
 
 ## Improvements
 - Shibboleth IdP is the latest stable release, v5.0.0, a major change. You will probably need to update your configuration.
@@ -23,8 +23,12 @@ Another major update: Shibboleth IdP v5.0.0 and Jetty v11.0.17 on Debian 12 (Boo
 ## Fixes
 - `apt-key` is now deprecated so the GPG key for Corretto Java packages is installed directly as a file
 - Build messages in the Dockerfile are never shown by modern Docker so they've all been removed and replaced by comments
-- Jetty contains fixes for HTTP2 DDOS issues
+- Jetty contains fixes for HTTP2 DDOS issues and Curl should also be free of recent issues.
 
+## Other changes
+- Image size has increased a little, by about 50MB.
+- The Ishigaki Specs (tests) have been moved back into the main repository: they weren't being used elsewhere, and 
+  syncing them was a chore. There might be a better, stand-alone set of IdP specs later to replace them as a generic tool.
 
 ## 3.0.0 - 2023-05-23
 
