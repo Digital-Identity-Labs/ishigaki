@@ -15,4 +15,12 @@ control "shibboleth_version" do
     its('content') { should eq "/opt/shibboleth-idp" }
   end
 
+  describe os_env('IDP_BASE_URL') do
+    its('content') { should eq "localhost:8080/idp" }
+  end
+
+  describe file('/opt/shibboleth-idp/dist/idp.installed.version') do
+    its('content') { should include "idp.installed.version=5.0.0" }
+  end
+
 end

@@ -11,8 +11,8 @@ control "jetty_version" do
     it { should exist }
   end
 
-  describe file('/opt/jetty/VERSION.txt') do
-    its('content') { should match(%r{^jetty-10}) }
+  describe command('cat /opt/jetty/VERSION.txt | head -n1') do
+    its('stdout') { should eq "jetty-11.0.17 - 09 October 2023\n" }
   end
 
   describe os_env('JETTY_HOME') do
