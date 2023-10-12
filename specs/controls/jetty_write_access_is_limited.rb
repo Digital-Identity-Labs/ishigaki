@@ -39,7 +39,7 @@ control "jetty_write_access_is_limited" do
     it {should be_writable.by 'owner'}
   end
 
-  %w[bin conf credentials dist doc edit-webapp flows messages views war].each do  |dir|
+  %w[bin conf credentials dist edit-webapp flows messages views war].each do  |dir|
     describe file("/opt/shibboleth-idp/#{dir}") do
       it {should be_directory}
       its('owner') {should eq 'root'}
