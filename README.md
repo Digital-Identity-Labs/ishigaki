@@ -172,15 +172,6 @@ services:
 
 (This is not going to work on its own - you'll need to use your own data, Traefik configuration, LDAP data, etc)
 
-### When building an image based on Ishigaki
-
-Possibly useful things to know:
-
-* The Ishigaki repository uses the Inspec tests from
-  the [ishigaki-spec](https://github.com/Digital-Identity-Labs/ishigaki-spec) profile on Github. You can use this to
-  test your own Docker image by including it as a dependency in your inSpec profile. Look at the code in the Ishigaki
-  repo to see how it's done. set of tests
-
 ### When using Ishigaki's Dockerfile to build your own images
 
 The defaults for these settings can be changed by using `--build-arg THE_ARG="new setting"` with `docker build`
@@ -206,6 +197,8 @@ The defaults for these settings can be changed by using `--build-arg THE_ARG="ne
   *  PLUGIN_IDS A whitespace-seperated list of official plugin IDs to be installed
   *  PLUGIN_MODULES A comma-seperated list of module IDs to install after plugins
   *  WRITE_MD Set to "0" to have stricter write permissions in the metadata directory
+  *  INSTALL_PROPERTIES is automatically set to pass settings to the installer
+  *  DISABLE_MODULES will disable any modules set in a comma-seperated list of module IDs, after others are installed
 
 ### Running without a reverse proxy
 
@@ -240,8 +233,8 @@ stone [foundation walls of Japanese castles](http://jcastle.info/view/Stone_wall
 
 ## Alternatives
 
-* [TIER's Shib IdP](https://github.internet2.edu/docker/shib-idp/) - Tomcat-based and actively maintained. Two different images
-  on DockerHub.
+* [TIER's Shib IdP](https://github.internet2.edu/docker/shib-idp/) - Tomcat-based and actively maintained, this is the
+  "semi-official" containerized Shibboleth IdP
 
 ### Thanks
 
