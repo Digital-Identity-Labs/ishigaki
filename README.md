@@ -89,7 +89,7 @@ Most of the useful configuration for Ishigaki is in various /opt directories:
 * `shibboleth-idp` - the Shibboleth IDP configuration
 
 Adjust these files to suit your use-case - see the
-[Shibboleth IdP documentation](https://wiki.shibboleth.net/confluence/display/IDP4/Home) for lots more information.
+[Shibboleth IdP documentation](https://wiki.shibboleth.net/confluence/display/IDP5/Home) for lots more information.
 
 As you're probably copying these files over the top of existing files, you don't need to keep copies of files you aren't
 changing. You can usually not bother with the admin, jetty and misc directories. You will probably only need to change
